@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+
+    <AssemblyName>PipServices3.Expressions.Test</AssemblyName>
+    <RootNamespace>PipServices3.Expressions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\src.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Variants\" />
+    <Folder Include="Tokenizers\" />
+    <Folder Include="Tokenizers\Utilities\" />
+    <Folder Include="Tokenizers\Generic\" />
+    <Folder Include="Calculator\" />
+    <Folder Include="Calculator\Tokenizers\" />
+    <Folder Include="IO\" />
+    <Folder Include="Csv\" />
+    <Folder Include="Calculator\Variables\" />
+    <Folder Include="Calculator\Functions\" />
+    <Folder Include="Calculator\Parsers\" />
+  </ItemGroup>
+</Project>

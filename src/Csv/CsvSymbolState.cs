@@ -1,9 +1,10 @@
 ﻿using System;
 
 using PipServices3.Expressions.IO;
+using PipServices3.Expressions.Tokenizers;
 using PipServices3.Expressions.Tokenizers.Generic;
 
-namespace PipServices3.Expressions.Tokenizers.Csv
+namespace PipServices3.Expressions.Csv
 {
     /// <summary>
     /// Implements a symbol state to tokenize delimiters in CSV streams.

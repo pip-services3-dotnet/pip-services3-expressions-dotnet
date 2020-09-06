@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using PipServices3.Expressions.Tokenizers;
 using Xunit;
 
-namespace PipServices3.Expressions.Tokenizers.Csv
+namespace PipServices3.Expressions.Csv
 {
     /// <summary>
     /// Contains unit tests for Tokenizer package classes.
     /// </summary>
-    public class CsvTokenizerTest : AbstractTokenizerTest
+    public class CsvTokenizerTest
     {
         [Fact]
         public void TestTokenizerWithDefaultParameters()
@@ -40,7 +41,7 @@ namespace PipServices3.Expressions.Tokenizers.Csv
             tokenizer.SkipEof = true;
             IList<Token> tokenList = tokenizer.TokenizeBuffer(tokenString);
 
-            AssertAreEqualsTokenLists(expectedTokens, tokenList);
+            TokenizerFixture.AssertAreEqualsTokenLists(expectedTokens, tokenList);
         }
 
         [Fact]
@@ -77,7 +78,7 @@ namespace PipServices3.Expressions.Tokenizers.Csv
             tokenizer.SkipEof = true;
             IList<Token> tokenList = tokenizer.TokenizeBuffer(tokenString);
 
-            AssertAreEqualsTokenLists(expectedTokens, tokenList);
+            TokenizerFixture.AssertAreEqualsTokenLists(expectedTokens, tokenList);
         }
 
     }

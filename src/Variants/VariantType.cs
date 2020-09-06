@@ -1,10 +1,20 @@
-﻿using System;
-namespace PipServices3.Expressions.Variants
+﻿namespace PipServices3.Expressions.Variants
 {
-    public class VariantType
+    /// <summary>
+    /// Defines supported types of variant values.
+    /// </summary>
+    public enum VariantType
     {
-        public VariantType()
-        {
-        }
-    }
+        Null = 0,
+        Integer,
+        Long,
+        Float,
+        Double,
+        String,
+        Boolean,
+        DateTime,
+        TimeSpan,
+        Object,
+        Array
+    };
 }

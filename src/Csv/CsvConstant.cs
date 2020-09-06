@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PipServices3.Expressions.Tokenizers.Csv
+namespace PipServices3.Expressions.Csv
 {
     public static class CsvConstant
     {

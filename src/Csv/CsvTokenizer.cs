@@ -1,6 +1,7 @@
 ﻿using System;
+using PipServices3.Expressions.Tokenizers;
 
-namespace PipServices3.Expressions.Tokenizers.Csv
+namespace PipServices3.Expressions.Csv
 {
     /// <summary>
     /// Implements a tokenizer class for CSV files.

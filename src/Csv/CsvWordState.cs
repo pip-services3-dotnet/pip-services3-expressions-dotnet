@@ -2,7 +2,7 @@
 
 using PipServices3.Expressions.Tokenizers.Generic;
 
-namespace PipServices3.Expressions.Tokenizers.Csv
+namespace PipServices3.Expressions.Csv
 {
     /// <summary>
     /// Implements a word state to tokenize CSV stream.

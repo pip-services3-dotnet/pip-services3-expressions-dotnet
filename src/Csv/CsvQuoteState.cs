@@ -2,9 +2,10 @@
 using System.Text;
 
 using PipServices3.Expressions.IO;
+using PipServices3.Expressions.Tokenizers;
 using PipServices3.Expressions.Tokenizers.Utilities;
 
-namespace PipServices3.Expressions.Tokenizers.Csv
+namespace PipServices3.Expressions.Csv
 {
     /// <summary>
     /// Implements a quote string state object for CSV streams.
