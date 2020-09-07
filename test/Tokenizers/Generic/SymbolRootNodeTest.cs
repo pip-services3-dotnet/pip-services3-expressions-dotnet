@@ -38,7 +38,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
 
             var token = node.NextToken(reader);
             Assert.Equal("<", token.Value);
-            Assert.Equal(TokenType.Symbol, token.Value);
+            Assert.Equal(TokenType.Symbol, token.Type);
         }
     }
 }

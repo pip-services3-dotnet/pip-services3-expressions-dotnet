@@ -6,7 +6,7 @@ namespace PipServices3.Expressions.Calculator.Functions
     /// <summary>
     /// Implements a functions list.
     /// </summary>
-    public class FunctionCollection
+    public class FunctionCollection: IFunctionCollection
     {
         private IList<IFunction> _functions = new List<IFunction>();
 
@@ -14,7 +14,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// Adds a new function to the collection.
         /// </summary>
         /// <param name="function">a function to be added.</param>
-        public void Add(IFunction function)
+        public virtual void Add(IFunction function)
         {
             if (function == null)
             {
@@ -26,7 +26,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// <summary>
         /// A number of functions stored in the collection.
         /// </summary>
-        public int Length
+        public virtual int Length
         {
             get { return _functions.Count; }
         }
@@ -36,7 +36,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// </summary>
         /// <param name="index">a function index.</param>
         /// <returns>a retrieved function.</returns>
-        public IFunction Get(int index)
+        public virtual IFunction Get(int index)
         {
             return _functions[index];
         }
@@ -45,7 +45,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// Get all functions stores in the collection
         /// </summary>
         /// <returns>a list with functions.</returns>
-        public IList<IFunction> GetAll()
+        public virtual IList<IFunction> GetAll()
         {
             return new List<IFunction>(_functions);
         }
@@ -82,7 +82,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// Removes a function by its index.
         /// </summary>
         /// <param name="index">a index of the function to be removed.</param>
-        public void Remove(int index)
+        public virtual void Remove(int index)
         {
             _functions.RemoveAt(index);
         }
@@ -91,7 +91,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// Removes function by it's name.
         /// </summary>
         /// <param name="name">The function name to be removed.</param>
-        public void RemoveByName(string name)
+        public virtual void RemoveByName(string name)
         {
             int index = FindIndexByName(name);
             if (index >= 0)
@@ -103,7 +103,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// <summary>
         /// Clears the collection.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             _functions.Clear();
         }

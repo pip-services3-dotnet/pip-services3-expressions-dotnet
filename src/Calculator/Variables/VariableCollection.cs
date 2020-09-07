@@ -8,7 +8,7 @@ namespace PipServices3.Expressions.Calculator.Variables
     /// <summary>
     /// Implements a variables list.
     /// </summary>
-    public class VariableCollection
+    public class VariableCollection: IVariableCollection
     {
         private IList<IVariable> _variables = new List<IVariable>();
 
@@ -16,7 +16,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// Adds a new variable to the collection.
         /// </summary>
         /// <param name="variable">a variable to be added.</param>
-        public void Add(IVariable variable)
+        public virtual void Add(IVariable variable)
         {
             if (variable == null)
             {
@@ -28,7 +28,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// <summary>
         /// A number of variables stored in the collection.
         /// </summary>
-        public int Length
+        public virtual int Length
         {
             get { return _variables.Count; }
         }
@@ -38,7 +38,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// </summary>
         /// <param name="index">a variable index.</param>
         /// <returns>a retrieved variable.</returns>
-        public IVariable Get(int index)
+        public virtual IVariable Get(int index)
         {
             return _variables[index];
         }
@@ -47,7 +47,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// Get all variables stores in the collection
         /// </summary>
         /// <returns>a list with variables.</returns>
-        public IList<IVariable> GetAll()
+        public virtual IList<IVariable> GetAll()
         {
             return new List<IVariable>(_variables);
         }
@@ -100,7 +100,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// Removes a variable by its index.
         /// </summary>
         /// <param name="index">a index of the variable to be removed.</param>
-        public void Remove(int index)
+        public virtual void Remove(int index)
         {
             _variables.RemoveAt(index);
         }
@@ -109,7 +109,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// Removes variable by it's name.
         /// </summary>
         /// <param name="name">The variable name to be removed.</param>
-        public void RemoveByName(string name)
+        public virtual void RemoveByName(string name)
         {
             int index = FindIndexByName(name);
             if (index >= 0)
@@ -121,7 +121,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// <summary>
         /// Clears the collection.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             _variables.Clear();
         }
@@ -129,7 +129,7 @@ namespace PipServices3.Expressions.Calculator.Variables
         /// <summary>
         /// Clears all stored variables (assigns null values).
         /// </summary>
-        public void ClearValues()
+        public virtual void ClearValues()
         {
             foreach (IVariable var in _variables)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using PipServices3.Expressions.Variants;
 
 namespace PipServices3.Expressions.Calculator.Functions
@@ -52,62 +53,49 @@ namespace PipServices3.Expressions.Calculator.Functions
         }
 
         /// <summary>
-        /// Checks if stack contains the correct number of function parameters (must be stored on the top of the stack).
+        /// Checks if parameters contains the correct number of function parameters (must be stored on the top of the parameters).
         /// </summary>
-        /// <param name="stack">The stack with function parameters.</param>
+        /// <param name="parameters">A list with function parameters.</param>
         /// <param name="expectedParamCount">The expected number of function parameters.</param>
-        protected static void CheckParamCount(CalculationStack stack, int expectedParamCount)
+        protected static void CheckParamCount(IList<Variant> parameters, int expectedParamCount)
         {
-            Variant paramCount = stack.Peek();
-            if (paramCount.Type != VariantType.Integer)
-            {
-                throw new InvalidProgramException("Internal error.");
-            }
-            if (expectedParamCount != paramCount.AsInteger)
+            int paramCount = parameters.Count;
+            if (expectedParamCount != paramCount)
             {
                 throw new InvalidProgramException(String.Format("Expected {0} parameters but was found {1}",
-                    expectedParamCount, paramCount.AsInteger));
-            }
-            if (stack.Length < paramCount.AsInteger)
-            {
-                throw new InvalidProgramException("Stack does not contain sufficient numeber of function parameters.");
+                    expectedParamCount, paramCount));
             }
         }
 
         /// <summary>
         /// Gets function parameter by it's index.
         /// </summary>
-        /// <param name="stack">The stack with function parameters.</param>
+        /// <param name="parameters">A list with function parameters.</param>
         /// <param name="paramIndex">Index for the function parameter (0 for the first parameter).</param>
         /// <returns>Function parameter value.</returns>
-        protected static Variant GetParameter(CalculationStack stack, int paramIndex)
+        protected static Variant GetParameter(IList<Variant> parameters, int paramIndex)
         {
-            Variant paramCount = stack.Peek();
-            if (paramCount.Type != VariantType.Integer)
-            {
-                throw new InvalidProgramException("Internal error.");
-            }
-            return stack.PeekAt(stack.Length - 1 - paramCount.AsInteger + paramIndex);
+            return parameters[paramIndex];
         }
 
-        private Task<Variant> TimeFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> TimeFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 0);
+            CheckParamCount(parameters, 0);
             Variant result = new Variant((System.DateTime.Now.Ticks - 621355968000000000) / 10000);
             return Task.FromResult(result);
         }
 
-        private Task<Variant> MinFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> MinFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            int paramCount = stack.Peek().AsInteger;
+            int paramCount = parameters.Count;
             if (paramCount < 2)
             {
                 throw new InvalidProgramException("Expected at least 2 parameters");
             }
-            Variant result = GetParameter(stack, 0);
+            Variant result = GetParameter(parameters, 0);
             for (int i = 1; i < paramCount; i++)
             {
-                Variant value = GetParameter(stack, i);
+                Variant value = GetParameter(parameters, i);
                 if (variantOperations.More(result, value).AsBoolean)
                 {
                     result = value;
@@ -116,17 +104,17 @@ namespace PipServices3.Expressions.Calculator.Functions
             return Task.FromResult(result);
         }
 
-        private Task<Variant> MaxFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> MaxFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            int paramCount = stack.Peek().AsInteger;
+            int paramCount = parameters.Count;
             if (paramCount < 2)
             {
                 throw new InvalidProgramException("Expected at least 2 parameters");
             }
-            Variant result = GetParameter(stack, 0);
+            Variant result = GetParameter(parameters, 0);
             for (int i = 1; i < paramCount; i++)
             {
-                Variant value = GetParameter(stack, i);
+                Variant value = GetParameter(parameters, i);
                 if (variantOperations.Less(result, value).AsBoolean)
                 {
                     result = value;
@@ -135,42 +123,42 @@ namespace PipServices3.Expressions.Calculator.Functions
             return Task.FromResult(result);
         }
 
-        private Task<Variant> SumFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> SumFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            int paramCount = stack.Peek().AsInteger;
+            int paramCount = parameters.Count;
             if (paramCount < 2)
             {
                 throw new InvalidProgramException("Expected at least 2 parameters");
             }
-            Variant result = GetParameter(stack, 0);
+            Variant result = GetParameter(parameters, 0);
             for (int i = 1; i < paramCount; i++)
             {
-                Variant value = GetParameter(stack, i);
+                Variant value = GetParameter(parameters, i);
                 result = variantOperations.Add(result, value);
             }
             return Task.FromResult(result);
         }
 
-        private Task<Variant> IfFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> IfFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 3);
-            Variant value1 = GetParameter(stack, 0);
-            Variant value2 = GetParameter(stack, 1);
-            Variant value3 = GetParameter(stack, 2);
+            CheckParamCount(parameters, 3);
+            Variant value1 = GetParameter(parameters, 0);
+            Variant value2 = GetParameter(parameters, 1);
+            Variant value3 = GetParameter(parameters, 2);
             Variant condition = variantOperations.Convert(value1, VariantType.Boolean);
             Variant result = condition.AsBoolean ? value2 : value3;
             return Task.FromResult(result);
         }
 
-        private Task<Variant> ChooseFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> ChooseFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            int paramCount = stack.Peek().AsInteger;
+            int paramCount = parameters.Count;
             if (paramCount < 3)
             {
                 throw new InvalidProgramException("Expected at least 3 parameters");
             }
 
-            Variant value1 = GetParameter(stack, 0);
+            Variant value1 = GetParameter(parameters, 0);
             Variant condition = variantOperations.Convert(value1, VariantType.Integer);
             int paramIndex = condition.AsInteger;
 
@@ -180,35 +168,35 @@ namespace PipServices3.Expressions.Calculator.Functions
                     paramIndex + 1));
             }
 
-            Variant result = GetParameter(stack, paramIndex);
+            Variant result = GetParameter(parameters, paramIndex);
             return Task.FromResult(result);
         }
 
-        private Task<Variant> EFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> EFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 0);
+            CheckParamCount(parameters, 0);
             Variant result = new Variant(System.Math.E);
             return Task.FromResult(result);
         }
 
-        private Task<Variant> PiFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> PiFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 0);
+            CheckParamCount(parameters, 0);
             Variant result = new Variant(System.Math.PI);
             return Task.FromResult(result);
         }
 
-        private Task<Variant> RndFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> RndFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 0);
+            CheckParamCount(parameters, 0);
             Variant result = new Variant(_random.NextDouble());
             return Task.FromResult(result);
         }
 
-        private Task<Variant> AbsFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> AbsFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = GetParameter(stack, 0);
+            CheckParamCount(parameters, 1);
+            Variant value = GetParameter(parameters, 0);
             Variant result = new Variant();
             switch (value.Type)
             {
@@ -232,138 +220,138 @@ namespace PipServices3.Expressions.Calculator.Functions
             return Task.FromResult(result);
         }
 
-        private Task<Variant> AcosFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> AcosFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Acos(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> AsinFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> AsinFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Asin(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> AtanFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> AtanFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Atan(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> ExpFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> ExpFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Exp(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> LogFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> LogFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Log(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> Log10FunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> Log10FunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Log10(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> CeilFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> CeilFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Ceiling(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> FloorFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> FloorFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Floor(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> RoundFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> RoundFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Round(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> TruncFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> TruncFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant((int)value.AsDouble);
             return Task.FromResult(result);
         }
 
-        private Task<Variant> CosFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> CosFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Cos(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> SinFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> SinFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Sin(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> TanFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> TanFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Tan(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> SqrtFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> SqrtFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = variantOperations.Convert(GetParameter(stack, 0), VariantType.Double);
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Double);
             Variant result = new Variant(System.Math.Sqrt(value.AsDouble));
             return Task.FromResult(result);
         }
 
-        private Task<Variant> EmptyFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> EmptyFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 1);
-            Variant value = GetParameter(stack, 0);
+            CheckParamCount(parameters, 1);
+            Variant value = GetParameter(parameters, 0);
             Variant result = new Variant(value.IsEmpty());
             return Task.FromResult(result);
         }
 
-        private Task<Variant> NullFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> NullFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 0);
+            CheckParamCount(parameters, 0);
             Variant result = new Variant();
             return Task.FromResult(result);
         }
 
-        private Task<Variant> ContainsFunctionCalculatorAsync(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> ContainsFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
-            CheckParamCount(stack, 2);
-            Variant containerstr = variantOperations.Convert(GetParameter(stack, 0), VariantType.String);
-            Variant substring = variantOperations.Convert(GetParameter(stack, 1), VariantType.String);
+            CheckParamCount(parameters, 2);
+            Variant containerstr = variantOperations.Convert(GetParameter(parameters, 0), VariantType.String);
+            Variant substring = variantOperations.Convert(GetParameter(parameters, 1), VariantType.String);
 
             if (containerstr.IsEmpty() || containerstr.IsNull())
             {

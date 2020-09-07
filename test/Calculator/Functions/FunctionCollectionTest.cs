@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using PipServices3.Expressions.Variants;
 using Xunit;
 
@@ -7,7 +8,8 @@ namespace PipServices3.Expressions.Calculator.Functions
 {
     public class FunctionCollectionTest
     {
-        private Task<Variant> TestFunc(CalculationStack stack, IVariantOperations variantOperations)
+        private Task<Variant> TestFunc(
+            IList<Variant> parameters, IVariantOperations variantOperations)
         {
             return Task.FromResult(new Variant());
         }

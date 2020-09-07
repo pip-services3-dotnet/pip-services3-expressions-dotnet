@@ -237,12 +237,20 @@ namespace PipServices3.Expressions.Calculator
                     throw new ExpressionException(String.Format("Function {0} was not found.",
                         token.Value.AsString));
                 }
-                Variant functionResult = await function.CalculateAsync(stack, _variantOperations);
-                for (int paramCount = stack.Pop().AsInteger; paramCount > 0; paramCount--)
+
+                // Prepare parameters
+                var parameters = new List<Variant>();
+                var paramCount = stack.Pop().AsInteger;
+                while (paramCount > 0)
                 {
-                    stack.Pop();
+                    parameters.Insert(0, stack.Pop());
+                    paramCount--;
                 }
+
+                Variant functionResult = await function.CalculateAsync(parameters, _variantOperations);
+
                 stack.Push(functionResult);
+
                 return true;
             }
             return false;
