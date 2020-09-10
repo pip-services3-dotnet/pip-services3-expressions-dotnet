@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PipServices3.Expressions.IO;
+using PipServices3.Expressions.Tokenizers.Utilities;
 
 namespace PipServices3.Expressions.Tokenizers.Generic
 {
@@ -31,8 +32,14 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             }
             else
             {
-                reader.Pushback(secondSymbol);
-                reader.Pushback(firstSymbol);
+                if (!CharValidator.IsEof(secondSymbol))
+                {
+                    reader.Pushback(secondSymbol);
+                }
+                if (!CharValidator.IsEof(firstSymbol))
+                {
+                    reader.Pushback(firstSymbol);
+                }
                 return tokenizer.SymbolState.NextToken(reader, tokenizer);
             }
         }

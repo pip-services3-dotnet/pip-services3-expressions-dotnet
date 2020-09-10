@@ -9,7 +9,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
     /// <summary>
     /// This state will either delegate to a comment-handling state, or return a token with just a slash in it.
     /// </summary>
-    public class CppCommentState : GenericCommentState
+    public class CppCommentState : ICommentState
     {
         /// <summary>
         /// Ignore everything up to a closing star and slash, and then return the tokenizer's next token.
@@ -60,7 +60,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <param name="reader"></param>
         /// <param name="tokenizer"></param>
         /// <returns>Either just a slash token, or the results of delegating to a comment-handling state.</returns>
-        public override Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public virtual Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
         {
             char firstSymbol = reader.Read();
             if (firstSymbol != '/')
@@ -80,8 +80,14 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             }
             else
             {
-                reader.Pushback(secondSymbol);
-                reader.Pushback(firstSymbol);
+                if (!CharValidator.IsEof(secondSymbol))
+                {
+                    reader.Pushback(secondSymbol);
+                }
+                if (!CharValidator.IsEof(firstSymbol))
+                {
+                    reader.Pushback(firstSymbol);
+                }
                 return tokenizer.SymbolState.NextToken(reader, tokenizer);
             }
         }

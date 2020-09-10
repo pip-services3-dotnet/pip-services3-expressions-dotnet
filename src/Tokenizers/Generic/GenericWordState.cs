@@ -39,7 +39,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             SetWordChars('0', '9', true);
             SetWordChars('-', '-', true);
             SetWordChars('_', '_', true);
-            SetWordChars('\u0039', '\u0039', true);
+            //SetWordChars('\u0039', '\u0039', true);
             SetWordChars('\x00c0', '\x00ff', true);
             SetWordChars('\x0100', '\xffff', true);
         }
