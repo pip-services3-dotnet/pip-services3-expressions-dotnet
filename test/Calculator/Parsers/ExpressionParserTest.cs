@@ -11,6 +11,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
         {
             var parser = new ExpressionParser();
             parser.Expression = "(2+2)*ABS(-2)";
+
             var expectedTokens = new ExpressionToken[] {
                 new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2)),
                 new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2)),

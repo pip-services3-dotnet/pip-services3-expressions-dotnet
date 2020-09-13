@@ -62,7 +62,8 @@ namespace PipServices3.Expressions.Calculator.Functions
             int paramCount = parameters.Count;
             if (expectedParamCount != paramCount)
             {
-                throw new InvalidProgramException(String.Format("Expected {0} parameters but was found {1}",
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT",
+                    String.Format("Expected {0} parameters but was found {1}",
                     expectedParamCount, paramCount));
             }
         }
@@ -90,7 +91,7 @@ namespace PipServices3.Expressions.Calculator.Functions
             int paramCount = parameters.Count;
             if (paramCount < 2)
             {
-                throw new InvalidProgramException("Expected at least 2 parameters");
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected at least 2 parameters");
             }
             Variant result = GetParameter(parameters, 0);
             for (int i = 1; i < paramCount; i++)
@@ -128,7 +129,7 @@ namespace PipServices3.Expressions.Calculator.Functions
             int paramCount = parameters.Count;
             if (paramCount < 2)
             {
-                throw new InvalidProgramException("Expected at least 2 parameters");
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected at least 2 parameters");
             }
             Variant result = GetParameter(parameters, 0);
             for (int i = 1; i < paramCount; i++)
@@ -155,7 +156,7 @@ namespace PipServices3.Expressions.Calculator.Functions
             int paramCount = parameters.Count;
             if (paramCount < 3)
             {
-                throw new InvalidProgramException("Expected at least 3 parameters");
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected at least 3 parameters");
             }
 
             Variant value1 = GetParameter(parameters, 0);
@@ -164,7 +165,7 @@ namespace PipServices3.Expressions.Calculator.Functions
 
             if (paramCount < paramIndex + 1)
             {
-                throw new InvalidProgramException(string.Format("Expected at least {0} parameters",
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", string.Format("Expected at least {0} parameters",
                     paramIndex + 1));
             }
 

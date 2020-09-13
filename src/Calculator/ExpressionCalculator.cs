@@ -14,8 +14,8 @@ namespace PipServices3.Expressions.Calculator
     /// </summary>
     public class ExpressionCalculator
     {
-        private VariableCollection _defaultVariables = new VariableCollection();
-        private FunctionCollection _defaultFunctions = new DefaultFunctionCollection();
+        private IVariableCollection _defaultVariables = new VariableCollection();
+        private IFunctionCollection _defaultFunctions = new DefaultFunctionCollection();
         private IVariantOperations _variantOperations = new TypeUnsafeVariantOperations();
         private ExpressionParser _parser = new ExpressionParser();
         private bool _autoVariables = true;
@@ -94,7 +94,7 @@ namespace PipServices3.Expressions.Calculator
         /// <summary>
         /// The list with default variables.
         /// </summary>
-        public VariableCollection DefaultVariables
+        public IVariableCollection DefaultVariables
         {
             get { return _defaultVariables; }
         }
@@ -102,7 +102,7 @@ namespace PipServices3.Expressions.Calculator
         /// <summary>
         /// The list with default functions.
         /// </summary>
-        public FunctionCollection DefaultFunctions
+        public IFunctionCollection DefaultFunctions
         {
             get { return _defaultFunctions; }
         }
@@ -127,7 +127,7 @@ namespace PipServices3.Expressions.Calculator
         /// Populates the specified variables list with variables from parsed expression.
         /// </summary>
         /// <param name="variables">The list of variables to be populated.</param>
-        public void CreateVariables(VariableCollection variables)
+        public void CreateVariables(IVariableCollection variables)
         {
             foreach (string variableName in _parser.VariableNames)
             {
@@ -161,7 +161,7 @@ namespace PipServices3.Expressions.Calculator
         /// </summary>
         /// <param name="variables">The list of variables</param>
         /// <returns>An evaluated expression value.</returns>
-        public Task<Variant> EvaluateUsingVariablesAsync(VariableCollection variables)
+        public Task<Variant> EvaluateUsingVariablesAsync(IVariableCollection variables)
         {
             return EvaluateUsingVariablesAndFunctionsAsync(variables, null);
         }
@@ -173,7 +173,7 @@ namespace PipServices3.Expressions.Calculator
         /// <param name="functions">The list of functions.</param>
         /// <returns>An evaluated expression value.</returns>
         public async Task<Variant> EvaluateUsingVariablesAndFunctionsAsync(
-            VariableCollection variables, FunctionCollection functions)
+            IVariableCollection variables, IFunctionCollection functions)
         {
             CalculationStack stack = new CalculationStack();
             variables = variables ?? _defaultVariables;
@@ -190,13 +190,13 @@ namespace PipServices3.Expressions.Calculator
                 else if (EvaluateOther(token, stack)) { }
                 else
                 {
-                    throw new ExpressionException("Internal error.");
+                    throw new ExpressionException(null, "INTERNAL", "Internal error.");
                 }
             }
 
             if (stack.Length != 1)
             {
-                throw new ExpressionException("Internal error.");
+                throw new ExpressionException(null, "INTERNAL", "Internal error.");
             }
             return stack.Pop();
         }
@@ -211,15 +211,16 @@ namespace PipServices3.Expressions.Calculator
             return false;
         }
 
-        private static bool EvaluateVariable(ExpressionToken token, CalculationStack stack, VariableCollection variables)
+        private static bool EvaluateVariable(
+            ExpressionToken token, CalculationStack stack, IVariableCollection variables)
         {
             if (token.Type == ExpressionTokenType.Variable)
             {
                 IVariable variable = variables.FindByName(token.Value.AsString);
                 if (variable == null)
                 {
-                    throw new ExpressionException(String.Format("Variable {0} was not found.",
-                        token.Value.AsString));
+                    throw new ExpressionException(null, "VAR_NOT_FOUND",
+                        String.Format("Variable {0} was not found.", token.Value.AsString));
                 }
                 stack.Push(variable.Value);
                 return true;
@@ -227,15 +228,16 @@ namespace PipServices3.Expressions.Calculator
             return false;
         }
 
-        private async Task<bool> EvaluateFunctionAsync(ExpressionToken token, CalculationStack stack, FunctionCollection functions)
+        private async Task<bool> EvaluateFunctionAsync(
+            ExpressionToken token, CalculationStack stack, IFunctionCollection functions)
         {
             if (token.Type == ExpressionTokenType.Function)
             {
                 IFunction function = functions.FindByName(token.Value.AsString);
                 if (function == null)
                 {
-                    throw new ExpressionException(String.Format("Function {0} was not found.",
-                        token.Value.AsString));
+                    throw new ExpressionException(null, "FUNC_NOT_FOUND",
+                        String.Format("Function {0} was not found.", token.Value.AsString));
                 }
 
                 // Prepare parameters
