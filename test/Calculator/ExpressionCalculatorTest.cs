@@ -38,6 +38,16 @@ namespace PipServices3.Expressions.Calculator
             result = await calculator.EvaluateAsync();
             Assert.Equal(VariantType.Boolean, result.Type);
             Assert.False(result.AsBoolean);
+
+            calculator.Expression = "2 IN (1,2,3)";
+            result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Boolean, result.Type);
+            Assert.True(result.AsBoolean);
+
+            calculator.Expression = "5 NOT IN (1,2,3)";
+            result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Boolean, result.Type);
+            Assert.True(result.AsBoolean);
         }
 
     }
