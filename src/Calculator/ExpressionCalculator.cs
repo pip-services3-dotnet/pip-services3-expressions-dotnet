@@ -419,7 +419,14 @@ namespace PipServices3.Expressions.Calculator
                     {
                         Variant value2 = stack.Pop();
                         Variant value1 = stack.Pop();
-                        stack.Push(_variantOperations.In(value1, value2));
+                        stack.Push(_variantOperations.In(value2, value1));
+                        return true;
+                    }
+                case ExpressionTokenType.NotIn:
+                    {
+                        Variant value2 = stack.Pop();
+                        Variant value1 = stack.Pop();
+                        stack.Push(new Variant(!_variantOperations.In(value2, value1).AsBoolean));
                         return true;
                     }
                 case ExpressionTokenType.Element:

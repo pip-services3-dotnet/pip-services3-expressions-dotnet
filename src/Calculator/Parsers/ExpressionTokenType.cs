@@ -29,6 +29,7 @@
         Xor,
         Is,
         In,
+        NotIn,
         Element,
         Null,
         Not,

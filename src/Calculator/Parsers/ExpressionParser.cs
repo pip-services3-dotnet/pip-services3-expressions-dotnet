@@ -437,6 +437,11 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 {
                     AddTokenToResult(ExpressionTokenType.IsNotNull, Variant.Empty);
                 }
+                else if (MatchTokensWithTypes(ExpressionTokenType.Not, ExpressionTokenType.In))
+                {
+                    PerformSyntaxAnalysisAtLevel4();
+                    AddTokenToResult(ExpressionTokenType.NotIn, Variant.Empty);
+                }
                 else
                 {
                     break;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using PipServices3.Expressions.Variants;
+using System.Linq;
 
 namespace PipServices3.Expressions.Calculator.Functions
 {
@@ -50,6 +51,7 @@ namespace PipServices3.Expressions.Calculator.Functions
             Add(new DelegatedFunction("Empty", (FunctionCalculator)EmptyFunctionCalculatorAsync));
             Add(new DelegatedFunction("Null", (FunctionCalculator)NullFunctionCalculatorAsync));
             Add(new DelegatedFunction("Contains", (FunctionCalculator)ContainsFunctionCalculatorAsync));
+            Add(new DelegatedFunction("Array", (FunctionCalculator)ArrayFunctionCalculatorAsync));
         }
 
         /// <summary>
@@ -361,6 +363,11 @@ namespace PipServices3.Expressions.Calculator.Functions
 
             Variant result = new Variant(containerstr.AsString.IndexOf(substring.AsString) >= 0);
             return Task.FromResult(result);
+        }
+
+        private Task<Variant> ArrayFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            return Task.FromResult(new Variant(parameters.ToArray()));
         }
     }
 }
