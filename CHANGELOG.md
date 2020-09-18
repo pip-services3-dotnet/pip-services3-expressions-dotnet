@@ -4,6 +4,7 @@
 
 ### Features
 * Added new funtions: TIMESPAN, DAYOFWEEK
+* Rename TIME function to TICKS
 
 ## <a name="3.0.1"></a> 3.0.1 (2020-09-18)
 

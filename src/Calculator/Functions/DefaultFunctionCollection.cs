@@ -18,7 +18,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         /// </summary>
         public DefaultFunctionCollection()
         {
-            Add(new DelegatedFunction("Time", (FunctionCalculator)TimeFunctionCalculatorAsync));
+            Add(new DelegatedFunction("Ticks", (FunctionCalculator)TicksFunctionCalculatorAsync));
             Add(new DelegatedFunction("TimeSpan", (FunctionCalculator)TimeSpanFunctionCalculatorAsync));
             Add(new DelegatedFunction("Now", (FunctionCalculator)NowFunctionCalculatorAsync));
             Add(new DelegatedFunction("Date", (FunctionCalculator)DateFunctionCalculatorAsync));
@@ -84,7 +84,7 @@ namespace PipServices3.Expressions.Calculator.Functions
             return parameters[paramIndex];
         }
 
-        private Task<Variant> TimeFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        private Task<Variant> TicksFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
             CheckParamCount(parameters, 0);
             Variant result = new Variant((System.DateTime.Now.Ticks - 621355968000000000) / 10000);
