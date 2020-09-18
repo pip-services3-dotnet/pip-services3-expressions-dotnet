@@ -149,7 +149,7 @@ namespace PipServices3.Expressions.Calculator.Functions
             int paramCount = parameters.Count;
             if (paramCount < 2)
             {
-                throw new InvalidProgramException("Expected at least 2 parameters");
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected at least 2 parameters");
             }
             Variant result = GetParameter(parameters, 0);
             for (int i = 1; i < paramCount; i++)

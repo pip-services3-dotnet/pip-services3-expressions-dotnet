@@ -22,7 +22,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             if (firstSymbol != '/')
             {
                 reader.Pushback(firstSymbol);
-                throw new IncorrectStateException("Incorrect usage of CppCommentState.");
+                throw new IncorrectStateException(null, "INCORRECT_USAGE", "Incorrect usage of CppCommentState.");
             }
 
             char secondSymbol = reader.Read();

@@ -102,6 +102,12 @@ namespace PipServices3.Expressions.Calculator
             calculator.DefaultVariables.FindByName("date3").Value = new Variant(date);
             result = await calculator.EvaluateAsync();
             Assert.True(result.AsBoolean);
+
+            date = new DateTime(2020, 1, 1);
+            calculator.Expression = "date >= DATE(2019, 1, 1) AND date <= DATE(2021, 1, 1)";
+            calculator.DefaultVariables.FindByName("date").Value = new Variant(date);
+            result = await calculator.EvaluateAsync();
+            Assert.True(result.AsBoolean);
         }
 
     }

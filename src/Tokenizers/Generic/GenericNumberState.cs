@@ -73,7 +73,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 }
                 else
                 {
-                    throw new IncorrectStateException("Tokenizer must have an assigned symbol state.");
+                    throw new IncorrectStateException(null, "TOKENIZER_EXCEPTION", "Tokenizer must have an assigned symbol state.");
                 }
             }
 
