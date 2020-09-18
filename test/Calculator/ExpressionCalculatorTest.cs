@@ -108,6 +108,14 @@ namespace PipServices3.Expressions.Calculator
             calculator.DefaultVariables.FindByName("date").Value = new Variant(date);
             result = await calculator.EvaluateAsync();
             Assert.True(result.AsBoolean);
+
+            calculator.Expression = "DAYOFWEEK(DATE(2020, 09, 18)) = 5";
+            result = await calculator.EvaluateAsync();
+            Assert.True(result.AsBoolean);
+
+            calculator.Expression = "TIMESPAN(DATE(2020, 1, 1, 10, 30, 0)) > TIMESPAN(10, 15, 0)";
+            result = await calculator.EvaluateAsync();
+            Assert.True(result.AsBoolean);
         }
 
     }

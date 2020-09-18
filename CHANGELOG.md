@@ -1,5 +1,10 @@
 # Tokenizers, parsers and expression calculators for Pip.Services in Node.js Changelog
 
+## <a name="3.0.2"></a> 3.0.2 (2020-09-18)
+
+### Features
+* Added new funtions: TIMESPAN, DAYOFWEEK
+
 ## <a name="3.0.1"></a> 3.0.1 (2020-09-18)
 
 ### Features

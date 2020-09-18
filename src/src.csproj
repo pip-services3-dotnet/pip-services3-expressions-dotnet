@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
@@ -6,7 +6,7 @@
     <RootNamespace>PipServices3.Expressions</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.0.1</Version>
+    <Version>3.0.2</Version>
     <Authors>Sergey Seroukhov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2020</Copyright>
     <Description>Tokenizers, parsers and expression calculators for Pip.Services in .NET</Description>

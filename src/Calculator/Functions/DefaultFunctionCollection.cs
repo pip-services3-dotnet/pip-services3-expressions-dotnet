@@ -19,8 +19,10 @@ namespace PipServices3.Expressions.Calculator.Functions
         public DefaultFunctionCollection()
         {
             Add(new DelegatedFunction("Time", (FunctionCalculator)TimeFunctionCalculatorAsync));
+            Add(new DelegatedFunction("TimeSpan", (FunctionCalculator)TimeSpanFunctionCalculatorAsync));
             Add(new DelegatedFunction("Now", (FunctionCalculator)NowFunctionCalculatorAsync));
             Add(new DelegatedFunction("Date", (FunctionCalculator)DateFunctionCalculatorAsync));
+            Add(new DelegatedFunction("DayOfWeek", (FunctionCalculator)DayOfWeekFunctionCalculatorAsync));
             Add(new DelegatedFunction("Min", (FunctionCalculator)MinFunctionCalculatorAsync));
             Add(new DelegatedFunction("Max", (FunctionCalculator)MaxFunctionCalculatorAsync));
             Add(new DelegatedFunction("Sum", (FunctionCalculator)SumFunctionCalculatorAsync));
@@ -89,6 +91,33 @@ namespace PipServices3.Expressions.Calculator.Functions
             return Task.FromResult(result);
         }
 
+        private Task<Variant> TimeSpanFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            int paramCount = parameters.Count;
+            if (!(paramCount == 1 || paramCount == 3))
+            {
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected 1 or 3 parameters");
+            }
+
+            Variant result = new Variant();
+
+            if (paramCount == 1)
+            {
+                Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.DateTime);
+                result.AsTimeSpan = value.AsDateTime.TimeOfDay;
+            }
+            else if (paramCount == 3)
+            {
+                Variant value1 = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Integer);
+                Variant value2 = variantOperations.Convert(GetParameter(parameters, 1), VariantType.Integer);
+                Variant value3 = variantOperations.Convert(GetParameter(parameters, 2), VariantType.Integer);
+
+                result.AsTimeSpan = new TimeSpan(value1.AsInteger, value2.AsInteger, value3.AsInteger);
+            }
+         
+            return Task.FromResult(result);
+        }
+
         private Task<Variant> NowFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
             CheckParamCount(parameters, 0);
@@ -122,6 +151,14 @@ namespace PipServices3.Expressions.Calculator.Functions
             DateTime date = new DateTime(value1.AsInteger, value2.AsInteger, value3.AsInteger,
                 value4.AsInteger, value5.AsInteger, value6.AsInteger, value7.AsInteger);
             Variant result = Variant.FromDateTime(date);
+            return Task.FromResult(result);
+        }
+
+        private Task<Variant> DayOfWeekFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            CheckParamCount(parameters, 1);
+            Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.DateTime);
+            Variant result = Variant.FromInteger((int)value.AsDateTime.DayOfWeek);
             return Task.FromResult(result);
         }
 
