@@ -19,7 +19,8 @@ namespace PipServices3.Expressions.Calculator.Functions
         public DefaultFunctionCollection()
         {
             Add(new DelegatedFunction("Time", (FunctionCalculator)TimeFunctionCalculatorAsync));
-            Add(new DelegatedFunction("Now", (FunctionCalculator)TimeFunctionCalculatorAsync));
+            Add(new DelegatedFunction("Now", (FunctionCalculator)NowFunctionCalculatorAsync));
+            Add(new DelegatedFunction("Date", (FunctionCalculator)DateFunctionCalculatorAsync));
             Add(new DelegatedFunction("Min", (FunctionCalculator)MinFunctionCalculatorAsync));
             Add(new DelegatedFunction("Max", (FunctionCalculator)MaxFunctionCalculatorAsync));
             Add(new DelegatedFunction("Sum", (FunctionCalculator)SumFunctionCalculatorAsync));
@@ -85,6 +86,42 @@ namespace PipServices3.Expressions.Calculator.Functions
         {
             CheckParamCount(parameters, 0);
             Variant result = new Variant((System.DateTime.Now.Ticks - 621355968000000000) / 10000);
+            return Task.FromResult(result);
+        }
+
+        private Task<Variant> NowFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            CheckParamCount(parameters, 0);
+            Variant result = new Variant(System.DateTime.Now);
+            return Task.FromResult(result);
+        }
+
+        private Task<Variant> DateFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            int paramCount = parameters.Count;
+            if (paramCount < 1 || paramCount > 7)
+            {
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected from 1 to 7 parameters");
+            }
+
+            if (paramCount == 1)
+            {
+                Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Long);
+                Variant result1 = Variant.FromDateTime(new DateTime(value.AsLong));
+                return Task.FromResult(result1);
+            }
+
+            Variant value1 = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Integer);
+            Variant value2 = paramCount > 1 ? variantOperations.Convert(GetParameter(parameters, 1), VariantType.Integer) : Variant.FromInteger(1);
+            Variant value3 = paramCount > 2 ? variantOperations.Convert(GetParameter(parameters, 2), VariantType.Integer) : Variant.FromInteger(1);
+            Variant value4 = paramCount > 3 ? variantOperations.Convert(GetParameter(parameters, 3), VariantType.Integer) : Variant.FromInteger(0);
+            Variant value5 = paramCount > 4 ? variantOperations.Convert(GetParameter(parameters, 4), VariantType.Integer) : Variant.FromInteger(0);
+            Variant value6 = paramCount > 5 ? variantOperations.Convert(GetParameter(parameters, 5), VariantType.Integer) : Variant.FromInteger(0);
+            Variant value7 = paramCount > 6 ? variantOperations.Convert(GetParameter(parameters, 6), VariantType.Integer) : Variant.FromInteger(0);
+
+            DateTime date = new DateTime(value1.AsInteger, value2.AsInteger, value3.AsInteger,
+                value4.AsInteger, value5.AsInteger, value6.AsInteger, value7.AsInteger);
+            Variant result = Variant.FromDateTime(date);
             return Task.FromResult(result);
         }
 
