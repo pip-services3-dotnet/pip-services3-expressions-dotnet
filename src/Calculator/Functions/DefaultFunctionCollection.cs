@@ -94,25 +94,27 @@ namespace PipServices3.Expressions.Calculator.Functions
         private Task<Variant> TimeSpanFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
             int paramCount = parameters.Count;
-            if (!(paramCount == 1 || paramCount == 3))
+            if (paramCount != 1 && paramCount != 3 && paramCount != 4 && paramCount != 5)
             {
-                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected 1 or 3 parameters");
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected 1, 3, 4 or 5 parameters");
             }
 
             Variant result = new Variant();
 
             if (paramCount == 1)
             {
-                Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.DateTime);
-                result.AsTimeSpan = value.AsDateTime.TimeOfDay;
+                Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Long);
+                result.AsTimeSpan = new TimeSpan(value.AsLong);
             }
-            else if (paramCount == 3)
+            else if (paramCount > 2)
             {
                 Variant value1 = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Integer);
                 Variant value2 = variantOperations.Convert(GetParameter(parameters, 1), VariantType.Integer);
                 Variant value3 = variantOperations.Convert(GetParameter(parameters, 2), VariantType.Integer);
+                Variant value4 = paramCount > 3 ? variantOperations.Convert(GetParameter(parameters, 3), VariantType.Integer) : Variant.FromInteger(0);
+                Variant value5 = paramCount > 4 ? variantOperations.Convert(GetParameter(parameters, 4), VariantType.Integer) : Variant.FromInteger(0);
 
-                result.AsTimeSpan = new TimeSpan(value1.AsInteger, value2.AsInteger, value3.AsInteger);
+                result.AsTimeSpan = new TimeSpan(value1.AsInteger, value2.AsInteger, value3.AsInteger, value4.AsInteger, value5.AsInteger);
             }
          
             return Task.FromResult(result);

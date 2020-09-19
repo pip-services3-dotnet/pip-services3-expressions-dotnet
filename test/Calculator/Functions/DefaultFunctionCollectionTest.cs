@@ -67,7 +67,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         {
             var collection = new DefaultFunctionCollection();
             var parameters = new List<Variant>();
-            parameters.Add(new Variant(new DateTime(2020, 1, 1, 12, 0, 0)));
+            parameters.Add(Variant.FromLong(123));
             var operations = new TypeUnsafeVariantOperations();
 
             var func = collection.FindByName("TimeSpan");
@@ -75,9 +75,10 @@ namespace PipServices3.Expressions.Calculator.Functions
 
             var result = await func.CalculateAsync(parameters, operations);
             Assert.Equal(VariantType.TimeSpan, result.Type);
-            Assert.Equal(new TimeSpan(12, 0, 0), result.AsTimeSpan);
+            Assert.Equal(new TimeSpan(123), result.AsTimeSpan);
 
             parameters.Clear();
+            parameters.Add(new Variant(0));
             parameters.Add(new Variant(13));
             parameters.Add(new Variant(48));
             parameters.Add(new Variant(52));
@@ -87,10 +88,12 @@ namespace PipServices3.Expressions.Calculator.Functions
 
             result = await func.CalculateAsync(parameters, operations);
             Assert.Equal(VariantType.TimeSpan, result.Type);
-            Assert.Equal(new TimeSpan(13, 48, 52), result.AsTimeSpan);
+            Assert.Equal(new TimeSpan(0, 13, 48, 52), result.AsTimeSpan);
 
             // WRONG_PARAM_COUNT exception
             parameters.Clear();
+            parameters.Add(new Variant(1));
+            parameters.Add(new Variant(1));
             parameters.Add(new Variant(1));
             parameters.Add(new Variant(1));
             parameters.Add(new Variant(1));
