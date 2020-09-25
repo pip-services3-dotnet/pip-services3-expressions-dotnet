@@ -113,7 +113,7 @@ namespace PipServices3.Expressions.Calculator
             result = await calculator.EvaluateAsync();
             Assert.True(result.AsBoolean);
 
-            calculator.Expression = "TIMESPAN(DATE(2020, 1, 1, 10, 30, 0)) > TIMESPAN(10, 15, 0)";
+            calculator.Expression = "TIMEOFDAY(DATE(2020, 1, 1, 10, 17, 0)) > TIMEOFDAY(10, 15, 0)";
             result = await calculator.EvaluateAsync();
             Assert.True(result.AsBoolean);
         }

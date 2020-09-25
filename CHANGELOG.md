@@ -1,5 +1,10 @@
 # Tokenizers, parsers and expression calculators for Pip.Services in Node.js Changelog
 
+## <a name="3.0.3"></a> 3.0.3 (2020-09-25)
+
+### Features
+* Added new funtion TIMEOFDAY
+
 ## <a name="3.0.2"></a> 3.0.2 (2020-09-18)
 
 ### Features

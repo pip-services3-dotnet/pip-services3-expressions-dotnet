@@ -20,6 +20,7 @@ namespace PipServices3.Expressions.Calculator.Functions
         {
             Add(new DelegatedFunction("Ticks", (FunctionCalculator)TicksFunctionCalculatorAsync));
             Add(new DelegatedFunction("TimeSpan", (FunctionCalculator)TimeSpanFunctionCalculatorAsync));
+            Add(new DelegatedFunction("TimeOfDay", (FunctionCalculator)TimeOfDayFunctionCalculatorAsync));
             Add(new DelegatedFunction("Now", (FunctionCalculator)NowFunctionCalculatorAsync));
             Add(new DelegatedFunction("Date", (FunctionCalculator)DateFunctionCalculatorAsync));
             Add(new DelegatedFunction("DayOfWeek", (FunctionCalculator)DayOfWeekFunctionCalculatorAsync));
@@ -117,6 +118,33 @@ namespace PipServices3.Expressions.Calculator.Functions
                 result.AsTimeSpan = new TimeSpan(value1.AsInteger, value2.AsInteger, value3.AsInteger, value4.AsInteger, value5.AsInteger);
             }
          
+            return Task.FromResult(result);
+        }
+
+        private Task<Variant> TimeOfDayFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            int paramCount = parameters.Count;
+            if (!(paramCount == 1 || paramCount == 3))
+            {
+                throw new ExpressionException(null, "WRONG_PARAM_COUNT", "Expected 1 or 3 parameters");
+            }
+
+            Variant result = new Variant();
+
+            if (paramCount == 1)
+            {
+                Variant value = variantOperations.Convert(GetParameter(parameters, 0), VariantType.DateTime);
+                result.AsTimeSpan = value.AsDateTime.TimeOfDay;
+            }
+            else if (paramCount == 3)
+            {
+                Variant value1 = variantOperations.Convert(GetParameter(parameters, 0), VariantType.Integer);
+                Variant value2 = variantOperations.Convert(GetParameter(parameters, 1), VariantType.Integer);
+                Variant value3 = variantOperations.Convert(GetParameter(parameters, 2), VariantType.Integer);
+
+                result.AsTimeSpan = new TimeSpan(value1.AsInteger, value2.AsInteger, value3.AsInteger);
+            }
+
             return Task.FromResult(result);
         }
 
