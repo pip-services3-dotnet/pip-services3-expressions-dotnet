@@ -2,6 +2,11 @@
 
 ## <a name="3.0.3"></a> 3.0.3 (2020-09-25)
 
+### Bug Fixes
+* Fixed logical variant operations to get boolean instead null
+
+## <a name="3.0.3"></a> 3.0.3 (2020-09-25)
+
 ### Features
 * Added new funtion TIMEOFDAY
 

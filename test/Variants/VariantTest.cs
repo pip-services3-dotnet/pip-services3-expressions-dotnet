@@ -17,6 +17,15 @@ namespace PipServices3.Expressions.Variants
             Assert.Equal(VariantType.String, b.Type);
             Assert.Equal("xyz", b.AsString);
             Assert.Equal("xyz", b.AsObject);
+
+            Variant c = new Variant(0);
+            Assert.Equal(VariantType.Integer, c.Type);
+            Assert.Equal(0, c.AsInteger);
+            Assert.Equal(0, c.AsObject);
+
+            Variant d = new Variant(null);
+            Assert.Equal(VariantType.Null, d.Type);
+            Assert.Null(d.AsObject);
         }
     }
 }

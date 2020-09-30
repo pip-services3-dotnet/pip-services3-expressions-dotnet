@@ -646,6 +646,7 @@ namespace PipServices3.Expressions.Variants
             // Processes VariantType.Null values.
             if (value1.Type == VariantType.Null || value2.Type == VariantType.Null)
             {
+                result.AsBoolean = false;
                 return result;
             }
 
@@ -693,6 +694,7 @@ namespace PipServices3.Expressions.Variants
             // Processes VariantType.Null values.
             if (value1.Type == VariantType.Null || value2.Type == VariantType.Null)
             {
+                result.AsBoolean = false;
                 return result;
             }
 
@@ -740,6 +742,7 @@ namespace PipServices3.Expressions.Variants
             // Processes VariantType.Null values.
             if (value1.Type == VariantType.Null || value2.Type == VariantType.Null)
             {
+                result.AsBoolean = false;
                 return result;
             }
 
@@ -787,6 +790,7 @@ namespace PipServices3.Expressions.Variants
             // Processes VariantType.Null values.
             if (value1.Type == VariantType.Null || value2.Type == VariantType.Null)
             {
+                result.AsBoolean = false;
                 return result;
             }
 
@@ -834,6 +838,7 @@ namespace PipServices3.Expressions.Variants
             // Processes VariantType.Null values.
             if (value1.Type == VariantType.Null || value2.Type == VariantType.Null)
             {
+                result.AsBoolean = false;
                 return result;
             }
 

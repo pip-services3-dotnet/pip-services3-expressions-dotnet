@@ -81,7 +81,7 @@ namespace PipServices3.Expressions.Calculator
             result = await calculator.EvaluateAsync();
             Assert.True(result.AsBoolean);
 
-            
+
             var date = DateTime.UtcNow;
 
             calculator.Expression = "date1 = date2";
@@ -118,5 +118,31 @@ namespace PipServices3.Expressions.Calculator
             Assert.True(result.AsBoolean);
         }
 
+        [Fact]
+        public async Task TestExpressionCalculatorExtAsync()
+        {
+            ExpressionCalculator calculator = new ExpressionCalculator();
+
+            calculator.Expression = "A NOT IN ARRAY('A','B','C')";
+            Assert.Equal("A", calculator.DefaultVariables.FindByName("a").Name);
+            calculator.DefaultVariables.FindByName("A").Value = new Variant("d");
+            var result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Boolean, result.Type);
+            Assert.True(result.AsBoolean);
+
+            calculator.Expression = "A IN ARRAY('A','B','C')";
+            Assert.Equal("A", calculator.DefaultVariables.FindByName("a").Name);
+            calculator.DefaultVariables.FindByName("A").Value = new Variant("B");
+            result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Boolean, result.Type);
+            Assert.True(result.AsBoolean);
+
+            calculator.Expression = "B IN ARRAY('A','B','C')";
+            Assert.Equal("B", calculator.DefaultVariables.FindByName("B").Name);
+            calculator.DefaultVariables.FindByName("B").Value = new Variant(null);
+            result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Boolean, result.Type);
+            Assert.False(result.AsBoolean);
+        }
     }
 }
