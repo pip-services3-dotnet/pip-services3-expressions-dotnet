@@ -178,6 +178,14 @@
         /// <param name="value2">The second operand for this operation.</param>
         /// <returns>A result variant object.</returns>
         Variant GetElement(Variant value1, Variant value2);
+
+        /// <summary>
+        /// Performs LIKE operation for two variants.
+        /// </summary>
+        /// <param name="value1">The first operand for this operation.</param>
+        /// <param name="value2">The second operand for this operation.</param>
+        /// <returns>A result variant object.</returns>
+        Variant Like(Variant value1, Variant value2);
     }
 
 }

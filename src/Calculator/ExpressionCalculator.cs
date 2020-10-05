@@ -446,6 +446,20 @@ namespace PipServices3.Expressions.Calculator
                         stack.Push(new Variant(!stack.Pop().IsNull()));
                         return true;
                     }
+                case ExpressionTokenType.Like:
+                    {
+                        Variant value2 = stack.Pop();
+                        Variant value1 = stack.Pop();
+                        stack.Push(_variantOperations.Like(value1, value2));
+                        return true;
+                    }
+                case ExpressionTokenType.NotLike:
+                    {
+                        Variant value2 = stack.Pop();
+                        Variant value1 = stack.Pop();
+                        stack.Push(new Variant(!_variantOperations.Like(value1, value2).AsBoolean));
+                        return true;
+                    }
             }
             return false;
         }

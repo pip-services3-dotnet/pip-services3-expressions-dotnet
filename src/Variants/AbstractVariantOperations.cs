@@ -896,5 +896,40 @@ namespace PipServices3.Expressions.Variants
             }
             throw new NotSupportedException(String.Format("Operation '[]' is not supported for type {0}", TypeToString(value1.Type)));
         }
+
+        /// <summary>
+        /// Performs LIKE operation for two variants.
+        /// </summary>
+        /// <param name="value1">The first operand for this operation.</param>
+        /// <param name="value2">The second operand for this operation.</param>
+        /// <returns>A result variant object.</returns>
+        public virtual Variant Like(Variant value1, Variant value2)
+        {
+            var result = new Variant();
+
+            // Processes VariantType.Null values.
+            if (value1.Type == VariantType.Null || value2.Type == VariantType.Null)
+            {
+                result.AsBoolean = false;
+                return result;
+            }
+
+            // Processes null arrays.
+            if (value1.AsObject == null)
+            {
+                result.AsBoolean = false;
+                return result;
+            }
+
+            // Converts second operant to the string.
+            value2 = Convert(value2, VariantType.String);
+
+            if (value1.Type == VariantType.String)
+            {
+                result.AsBoolean = value1.AsString.Contains(value2.AsString);
+                return result;
+            }
+            throw new NotSupportedException(String.Format("Operation '<=' is not supported for type {0}", TypeToString(value1.Type)));
+        }
     }
 }

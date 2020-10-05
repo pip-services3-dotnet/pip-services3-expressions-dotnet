@@ -116,6 +116,18 @@ namespace PipServices3.Expressions.Calculator
             calculator.Expression = "TIMEOFDAY(DATE(2020, 1, 1, 10, 17, 0)) > TIMEOFDAY(10, 15, 0)";
             result = await calculator.EvaluateAsync();
             Assert.True(result.AsBoolean);
+
+            calculator.Expression = "'abcdf' LIKE 'abc'";
+            result = await calculator.EvaluateAsync();
+            Assert.True(result.AsBoolean);
+
+            calculator.Expression = "'abc' LIKE 'd'";
+            result = await calculator.EvaluateAsync();
+            Assert.False(result.AsBoolean);
+
+            calculator.Expression = "'abc' NOT LIKE 'd'";
+            result = await calculator.EvaluateAsync();
+            Assert.True(result.AsBoolean);
         }
 
         [Fact]
