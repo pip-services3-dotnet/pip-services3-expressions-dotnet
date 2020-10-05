@@ -1,6 +1,11 @@
 # Tokenizers, parsers and expression calculators for Pip.Services in Node.js Changelog
 
-## <a name="3.0.3"></a> 3.0.3 (2020-09-25)
+## <a name="3.0.5"></a> 3.0.5 (2020-10-05)
+
+### Features
+* Implemented LIKE operation
+
+## <a name="3.0.4"></a> 3.0.4 (2020-09-30)
 
 ### Bug Fixes
 * Fixed logical variant operations to get boolean instead null
