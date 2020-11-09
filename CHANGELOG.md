@@ -1,5 +1,10 @@
 # Tokenizers, parsers and expression calculators for Pip.Services in Node.js Changelog
 
+## <a name="3.0.6"></a> 3.0.6 (2020-11-09)
+
+### Bug Fixes
+* Extended expression words with dot symbol (required for complex variables, e.g. coordinate.x > 10)
+
 ## <a name="3.0.5"></a> 3.0.5 (2020-10-05)
 
 ### Features

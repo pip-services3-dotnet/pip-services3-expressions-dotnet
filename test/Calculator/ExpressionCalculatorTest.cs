@@ -156,5 +156,22 @@ namespace PipServices3.Expressions.Calculator
             Assert.Equal(VariantType.Boolean, result.Type);
             Assert.False(result.AsBoolean);
         }
+
+        [Fact]
+        public async Task TestEvaluationOfComplexVariables()
+        {
+            var variableName = "A.B";
+            var calculator = new ExpressionCalculator
+            {
+                Expression = $"{variableName} > 10"
+            };
+            Assert.Equal(variableName, calculator.DefaultVariables.FindByName(variableName).Name);
+
+            calculator.DefaultVariables.FindByName(variableName).Value = new Variant(20);
+
+            var result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Boolean, result.Type);
+            Assert.True(result.AsBoolean);
+        }
     }
 }

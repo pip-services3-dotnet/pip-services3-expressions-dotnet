@@ -28,6 +28,7 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
             SetWordChars('A', 'Z', true);
             SetWordChars('0', '9', true);
             SetWordChars('_', '_', true);
+            SetWordChars('.', '.', true);
             SetWordChars('\x00c0', '\x00ff', true);
             SetWordChars('\x0100', '\xffff', true);
         }

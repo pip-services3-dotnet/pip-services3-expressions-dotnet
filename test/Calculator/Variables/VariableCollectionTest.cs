@@ -36,5 +36,18 @@ namespace PipServices3.Expressions.Calculator.Variables
             collection.RemoveByName("GHI");
             Assert.Equal(1, collection.Length);
         }
+
+        [Fact]
+        public void TestComplexVariables()
+        {
+            var collection = new VariableCollection();
+
+            var var1 = new Variable("abc.xyz");
+            collection.Add(var1);
+            Assert.Equal(1, collection.Length);
+
+            var result = collection.FindByName("abc.xyz");
+            Assert.Equal(var1, result);
+        }
     }
 }
