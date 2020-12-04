@@ -1,48 +1,62 @@
-# Tokenizers, parsers and expression calculators for Pip.Services in Node.js Changelog
+# <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> <br/> Data processing and persistence components for .NET Changelog
 
-## <a name="3.0.6"></a> 3.0.6 (2020-11-09)
+## <a name="3.2.0-3.2.2"></a> 3.2.0-3.2.2 (2020-07-14)
+
+### Features
+* Moved some CRUD operations from IndentifiableMemoryPersistence to MemoryPersistence
+
+## <a name="3.1.1"></a> 3.1.1 (2020-06-26)
+
+### Features
+* Implemented support backward compatibility
+
+## <a name="3.1.0"></a> 3.1.0 (2020-05-26)
+
+### Breaking Changes
+* Migrated to .NET Core 3.1
+
+## <a name="3.0.0"></a> 3.0.0 (2018-03-26)
+
+### Breaking Changes
+* Migrated to Pip.Services 3.0
+* MongoDB persistence moved to a different package
+
+## <a name="2.3.0"></a> 2.2.0 (2018-03-26)
+
+### Breaking Changes
+* Deprecated MongoDb to PipServices3.Oss
+
+## <a name="2.2.0-2.2.1"></a> 2.2.0-2.2.1 (2018-01-31)
+* Updated reference to MongoDB Driver 2.5.0
+* Added support for MongoDB URI
+
+## <a name="2.1.0-2.1.2"></a> 2.1.0-2.1.2 (2017-11-15)
+* Migrated to .NET Core 2.0
+
+## <a name="2.0.0-2.0.3"></a> 2.0.0-2.0.3 (2017-06-12)
+
+### Breaking Changes
+* Migrated to pip-services3-commons 2.0
+* Separated **Persistence** and **IdentifiablePersistence** classes
+
+## <a name="1.0.1-1.0.11"></a> 1.0.1-1.0.11 (2017-01-07)
+
+### Features
+* **mongodb** Implemented consistent connection and credential parameters
 
 ### Bug Fixes
-* Extended expression words with dot symbol (required for complex variables, e.g. coordinate.x > 10)
+* Added description to NuGet package
+* Updated documentation
 
-## <a name="3.0.5"></a> 3.0.5 (2020-10-05)
+## <a name="1.0.0"></a> 1.0.0 (2016-11-21)
+
+Initial public release
 
 ### Features
-* Implemented LIKE operation
-
-## <a name="3.0.4"></a> 3.0.4 (2020-09-30)
+* **memory** Memory persistence
+* **file** Abstract file and JSON persistence
+* **mongodb** MongoDB persistence
 
 ### Bug Fixes
-* Fixed logical variant operations to get boolean instead null
-
-## <a name="3.0.3"></a> 3.0.3 (2020-09-25)
-
-### Features
-* Added new funtion TIMEOFDAY
-
-## <a name="3.0.2"></a> 3.0.2 (2020-09-18)
-
-### Features
-* Added new funtions: TIMESPAN, DAYOFWEEK
-* Rename TIME function to TICKS
-
-## <a name="3.0.1"></a> 3.0.1 (2020-09-18)
-
-### Features
-* Added new funtions: ARRAY, DATE
-* Added operation NOTIN
-* New tests
-
-### Bug Fixes
-* Fixed EOF processing in comment states
-* Fixed some exceptions
-
-## <a name="3.0.0"></a> 3.0.0 (2020-09-05)
-
-### Features
-* IO Streaming: IPushbackReader and StringPushbackReader
-* Variant (dynamic) values
-* Tokenizers (Lexical analyzers)
-* Expression calculator
-* CSV content processor
+No fixes in this version
 
