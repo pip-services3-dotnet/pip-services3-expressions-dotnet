@@ -102,7 +102,7 @@ namespace PipServices3.Expressions.Mustache.Parsers
         private void CheckForMoreTokens()
         {
             if (!HasMoreTokens())
-                throw new MustacheException(null, MustacheErrorCode.UnexpectedEnd, "Unexpected end of mustache.");
+                throw new MustacheException(null, MustacheErrorCode.UnexpectedEnd, "Unexpected end of mustache.", 0, 0);
         }
 
         /// <summary>
@@ -136,10 +136,12 @@ namespace PipServices3.Expressions.Mustache.Parsers
         /// </summary>
         /// <param name="type">The type of the token to be added.</param>
         /// <param name="value">The value of the token to be added.</param>
+        /// <param name="line">The line where the token is.</param>
+        /// <param name="column">The column number where the token is.</param>
         /// <returns></returns>
-        private MustacheToken AddTokenToResult(MustacheTokenType type, string value)
+        private MustacheToken AddTokenToResult(MustacheTokenType type, string value, int line, int column)
         {
-            var token = new MustacheToken(type, value);
+            var token = new MustacheToken(type, value, line, column);
             _resultTokens.Add(token);
             return token;
         }
@@ -179,7 +181,7 @@ namespace PipServices3.Expressions.Mustache.Parsers
                 if (HasMoreTokens())
                 {
                     var token = GetCurrentToken();
-                    throw new MustacheException(null, MustacheErrorCode.ErrorNear, "Syntax error near " + token.Value);
+                    throw new MustacheException(null, MustacheErrorCode.ErrorNear, "Syntax error near " + token.Value, token.Line, token.Column);
                 }
                 LookupVariables();
             }
@@ -252,7 +254,7 @@ namespace PipServices3.Expressions.Mustache.Parsers
                         {
                             if (closingBracket != token.Value)
                             {
-                                throw new MustacheException(null, MustacheErrorCode.MismatchedBrackets, "Mismatched brackets. Expected '" + closingBracket + "'");
+                                throw new MustacheException(null, MustacheErrorCode.MismatchedBrackets, "Mismatched brackets. Expected '" + closingBracket + "'", token.Line, token.Column);
                             }
 
                             if (operator1 == "#" && (operator2 == null || operator2 == "if"))
@@ -287,7 +289,7 @@ namespace PipServices3.Expressions.Mustache.Parsers
 
                             if (tokenType == MustacheTokenType.Unknown)
                             {
-                                throw new MustacheException(null, MustacheErrorCode.Internal, "Internal error");
+                                throw new MustacheException(null, MustacheErrorCode.Internal, "Internal error", token.Line, token.Column);
                             }
 
                             operator1 = null;
@@ -323,13 +325,13 @@ namespace PipServices3.Expressions.Mustache.Parsers
                 }
 
                 if (tokenType == MustacheTokenType.Unknown)
-                    throw new MustacheException(null, MustacheErrorCode.UnexpectedSymbol, "Unexpected symbol '" + token.Value + "'");
+                    throw new MustacheException(null, MustacheErrorCode.UnexpectedSymbol, "Unexpected symbol '" + token.Value + "'", token.Line, token.Column);
 
-                _initialTokens.Add(new MustacheToken(tokenType, tokenValue.ToString() != "" ? tokenValue.ToString() : null));
+                _initialTokens.Add(new MustacheToken(tokenType, tokenValue.ToString() != "" ? tokenValue.ToString() : null, token.Line, token.Column));
             }
 
             if (state != MustacheLexicalState.Value)
-                throw new MustacheException(null, MustacheErrorCode.UnexpectedEnd, "Unexpected end of file");
+                throw new MustacheException(null, MustacheErrorCode.UnexpectedEnd, "Unexpected end of file", 0, 0);
 
         }
 
@@ -346,10 +348,10 @@ namespace PipServices3.Expressions.Mustache.Parsers
 
                 if (token.Type == MustacheTokenType.SectionEnd)
                 {
-                    throw new MustacheException(null, MustacheErrorCode.UnexpectedSectionEnd, "Unexpected section end for variable '" + token.Value + "'");
+                    throw new MustacheException(null, MustacheErrorCode.UnexpectedSectionEnd, "Unexpected section end for variable '" + token.Value + "'", token.Line, token.Column);
                 }
 
-                var result = AddTokenToResult(token.Type, token.Value);
+                var result = AddTokenToResult(token.Type, token.Value, token.Line, token.Column);
 
                 if (token.Type == MustacheTokenType.Section || token.Type == MustacheTokenType.InvertedSection)
                 {
@@ -367,11 +369,11 @@ namespace PipServices3.Expressions.Mustache.Parsers
         private IList<MustacheToken> PerformSyntaxAnalysisForSection(string variable)
         {
             List<MustacheToken> result = new List<MustacheToken>();
-
+            MustacheToken token;
             CheckForMoreTokens();
             while (HasMoreTokens())
             {
-                var token = GetCurrentToken();
+                token = GetCurrentToken();
                 MoveToNextToken();
 
                 if (token.Type == MustacheTokenType.SectionEnd && (token.Value == variable || token.Value == null))
@@ -381,10 +383,10 @@ namespace PipServices3.Expressions.Mustache.Parsers
 
                 if (token.Type == MustacheTokenType.SectionEnd)
                 {
-                    throw new MustacheException(null, MustacheErrorCode.UnexpectedSectionEnd, "Unexpected section end for variable '" + variable + "'");
+                    throw new MustacheException(null, MustacheErrorCode.UnexpectedSectionEnd, "Unexpected section end for variable '" + variable + "'", token.Line, token.Column);
                 }
 
-                var resultToken = new MustacheToken(token.Type, token.Value);
+                var resultToken = new MustacheToken(token.Type, token.Value, token.Line, token.Column);
 
                 if (token.Type == MustacheTokenType.Section || token.Type == MustacheTokenType.InvertedSection)
                 {
@@ -394,7 +396,8 @@ namespace PipServices3.Expressions.Mustache.Parsers
                 result.Add(resultToken);
             }
 
-            throw new MustacheException(null, MustacheErrorCode.NotClosedSection, "Not closed section for variable '" + variable + "'");
+            token = GetCurrentToken();
+            throw new MustacheException(null, MustacheErrorCode.NotClosedSection, "Not closed section for variable '" + variable + "'", token.Line, token.Column);
         }
 
         /// <summary>

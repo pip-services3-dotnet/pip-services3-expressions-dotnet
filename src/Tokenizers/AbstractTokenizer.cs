@@ -156,9 +156,10 @@ namespace PipServices3.Expressions.Tokenizers
         protected virtual Token ReadNextToken()
         {
             if (_scanner == null)
-            {
                 return null;
-            }
+
+            int line = this._scanner.PeekLine();
+            int column = this._scanner.PeekColumn();
 
             Token token = null;
 
@@ -184,7 +185,7 @@ namespace PipServices3.Expressions.Tokenizers
                 // Check for unknown characters and endless loops...
                 if (token == null || string.IsNullOrEmpty(token.Value))
                 {
-                    token = new Token(TokenType.Unknown, _scanner.Read().ToString());
+                    token = new Token(TokenType.Unknown, _scanner.Read().ToString(), line, column);
                 }
 
                 // Skip unknown characters if option set.
@@ -197,7 +198,7 @@ namespace PipServices3.Expressions.Tokenizers
                 // Decode strings is option set.
                 if (state is IQuoteState && _decodeStrings)
                 {
-                    token = new Token(token.Type, QuoteState.DecodeString(token.Value, nextChar));
+                    token = new Token(token.Type, QuoteState.DecodeString(token.Value, nextChar), line, column);
                 }
 
                 // Skips comments if option set.
@@ -219,7 +220,7 @@ namespace PipServices3.Expressions.Tokenizers
                 // Unifies whitespaces if option set.
                 if (token.Type == TokenType.Whitespace && _mergeWhitespaces)
                 {
-                    token = new Token(TokenType.Whitespace, " ");
+                    token = new Token(TokenType.Whitespace, " ", line, column);
                 }
 
                 // Unifies numbers if option set.
@@ -228,7 +229,7 @@ namespace PipServices3.Expressions.Tokenizers
                     || token.Type == TokenType.Float
                     || token.Type == TokenType.HexDecimal))
                 {
-                    token = new Token(TokenType.Number, token.Value);
+                    token = new Token(TokenType.Number, token.Value, line, column);
                 }
 
                 break;
@@ -237,7 +238,7 @@ namespace PipServices3.Expressions.Tokenizers
             // Adds an Eof if option is not set.
             if (token == null && _lastTokenType != TokenType.Eof && !_skipEof)
             {
-                token = new Token(TokenType.Eof, null);
+                token = new Token(TokenType.Eof, null, line, column);
             }
 
             // Assigns the last token type

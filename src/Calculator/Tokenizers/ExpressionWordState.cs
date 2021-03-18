@@ -42,12 +42,14 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
         public override Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             Token token = base.NextToken(scanner, tokenizer);
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
 
             foreach (string keyword in Keywords)
             {
                 if (keyword.Equals(token.Value, StringComparison.OrdinalIgnoreCase))
                 {
-                    return new Token(TokenType.Keyword, token.Value);
+                    return new Token(TokenType.Keyword, token.Value, line, column);
                 }
             }
             return token;

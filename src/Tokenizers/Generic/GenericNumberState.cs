@@ -25,6 +25,8 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             bool gotADigit = false;
             StringBuilder tokenValue = new StringBuilder("");
             char nextSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
 
             // Parses leading minus.
             if (nextSymbol == '-')
@@ -77,7 +79,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 }
             }
 
-            return new Token(absorbedDot ? TokenType.Float : TokenType.Integer, tokenValue.ToString());
+            return new Token(absorbedDot ? TokenType.Float : TokenType.Integer, tokenValue.ToString(), line, column);
         }
     }
 }

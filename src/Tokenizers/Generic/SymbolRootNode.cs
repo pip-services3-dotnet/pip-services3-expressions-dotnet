@@ -46,16 +46,20 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         public Token NextToken(IScanner scanner)
         {
             char nextSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+
             SymbolNode childNode = FindChildWithChar(nextSymbol);
+            
             if (childNode != null)
             {
                 childNode = childNode.DeepestRead(scanner);
                 childNode = childNode.UnreadToValid(scanner);
-                return new Token(childNode.TokenType, childNode.Ancestry());
+                return new Token(childNode.TokenType, childNode.Ancestry(), line, column);
             }
             else
             {
-                return new Token(TokenType.Symbol, nextSymbol.ToString());
+                return new Token(TokenType.Symbol, nextSymbol.ToString(), line, column);
             }
         }
     }

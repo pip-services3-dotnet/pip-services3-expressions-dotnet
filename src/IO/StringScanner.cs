@@ -135,6 +135,35 @@ namespace PipServices3.Expressions.IO
         }
 
         /// <summary>
+        /// Gets the next character line number
+        /// </summary>
+        /// <returns>The next character line number in the stream</returns>
+        public int PeekLine()
+        {
+            int charBefore = CharAt(_position);
+            int charAt = CharAt(_position + 1);
+            int charAfter = CharAt(_position + 2);
+
+            return IsLine(charBefore, charAt, charAfter) ? _line + 1 : _line;
+        }
+
+        /// <summary>
+        /// Gets the next character column number
+        /// </summary>
+        /// <returns>The next character column number in the stream</returns>
+        public int PeekColumn()
+        {
+            int charBefore = CharAt(_position);
+            int charAt = CharAt(_position + 1);
+            int charAfter = CharAt(_position + 2);
+
+            if (IsLine(charBefore, charAt, charAfter))
+                return 0;
+
+            return IsColumn(charAt) ? _column + 1 : _column;
+        }
+
+        /// <summary>
         /// Puts the one character back into the stream stream.
         /// </summary>
         public void Unread()
@@ -144,12 +173,12 @@ namespace PipServices3.Expressions.IO
                 return;
 
             // Update the current position
-            this._position--;
+            _position--;
 
             // Update line and columns (optimization)
-            if (this._column > 0)
+            if (_column > 0)
             {
-                this._column--;
+                _column--;
                 return;
             }
 
@@ -161,7 +190,7 @@ namespace PipServices3.Expressions.IO
             int charAt = StringScanner.Eof;
             int charAfter = CharAt(0);
 
-            for (int position = 0; position <= this._position; position++)
+            for (int position = 0; position <= _position; position++)
             {
                 charBefore = charAt;
                 charAt = charAfter;
@@ -169,8 +198,8 @@ namespace PipServices3.Expressions.IO
 
                 if (IsLine(charBefore, charAt, charAfter))
                 {
-                    this._line++;
-                    this._column = 0;
+                    _line++;
+                    _column = 0;
                 }
                 if (IsColumn(charAt))
                     _column++;

@@ -21,6 +21,8 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
         public Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             char firstSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
             StringBuilder tokenValue = new StringBuilder();
             tokenValue.Append(firstSymbol);
 
@@ -42,7 +44,7 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
             }
 
             return new Token(firstSymbol == '"' ? TokenType.Word : TokenType.Quoted,
-                tokenValue.ToString());
+                tokenValue.ToString(), line, column);
         }
 
         /// <summary>

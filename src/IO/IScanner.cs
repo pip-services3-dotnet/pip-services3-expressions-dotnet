@@ -35,6 +35,18 @@ namespace PipServices3.Expressions.IO
         char Peek();
 
         /// <summary>
+        /// Gets the next character line number
+        /// </summary>
+        /// <returns>The next character line number in the stream</returns>
+        int PeekLine();
+
+        /// <summary>
+        /// Gets the next character column number
+        /// </summary>
+        /// <returns>The next character column number in the stream</returns>
+        int PeekColumn();
+
+        /// <summary>
         /// Puts the one character back into the stream stream.
         /// </summary>
         void Unread();

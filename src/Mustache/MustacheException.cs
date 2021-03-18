@@ -11,8 +11,12 @@ namespace PipServices3.Expressions.Mustache
     /// </summary>
     public class MustacheException : BadRequestException
     {
-
-        public MustacheException(string correlationId = null, string code = null, string message = null) : base(correlationId, code, message)
+        public MustacheException(string correlationId = null, string code = null, string message = null,
+             int line = 0, int column = 0, Exception innerException = null) :
+             
+                base(correlationId, code, 
+                    line != 0 || column != 0 ? message + " at line " + line + " and column " + column : message, 
+                    innerException)
         {
 
         }

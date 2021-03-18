@@ -26,8 +26,11 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             char firstSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
             StringBuilder tokenValue = new StringBuilder();
             tokenValue.Append(firstSymbol);
+            
 
             for (char nextSymbol = scanner.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
             {
@@ -38,7 +41,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 }
             }
 
-            return new Token(TokenType.Quoted, tokenValue.ToString());
+            return new Token(TokenType.Quoted, tokenValue.ToString(), line, column);
         }
 
         /// <summary>

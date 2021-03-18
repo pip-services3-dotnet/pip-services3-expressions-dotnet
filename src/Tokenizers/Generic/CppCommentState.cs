@@ -63,6 +63,9 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             char firstSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+
             if (firstSymbol != '/')
             {
                 scanner.Unread();
@@ -72,11 +75,11 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             char secondSymbol = scanner.Read();
             if (secondSymbol == '*')
             {
-                return new Token(TokenType.Comment, "/*" + GetMultiLineComment(scanner));
+                return new Token(TokenType.Comment, "/*" + GetMultiLineComment(scanner), line, column);
             }
             else if (secondSymbol == '/')
             {
-                return new Token(TokenType.Comment, "//" + GetSingleLineComment(scanner));
+                return new Token(TokenType.Comment, "//" + GetSingleLineComment(scanner), line, column);
             }
             else
             {

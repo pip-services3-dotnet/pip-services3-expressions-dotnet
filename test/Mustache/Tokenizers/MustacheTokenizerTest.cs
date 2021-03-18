@@ -15,13 +15,13 @@ namespace PipServices3.Expressions.Mustache.Tokenizers
             string tokenString = "Hello, {{ Name }}!";
             Token[] expectedTokens =
             {
-                new Token(TokenType.Special, "Hello, "),
-                new Token(TokenType.Symbol, "{{"),
-                new Token(TokenType.Whitespace, " "),
-                new Token(TokenType.Word, "Name"),
-                new Token(TokenType.Whitespace, " "),
-                new Token(TokenType.Symbol, "}}"),
-                new Token(TokenType.Special, "!"),
+                new Token(TokenType.Special, "Hello, ", 0, 0),
+                new Token(TokenType.Symbol, "{{", 0, 0),
+                new Token(TokenType.Whitespace, " ", 0, 0),
+                new Token(TokenType.Word, "Name", 0, 0),
+                new Token(TokenType.Whitespace, " ", 0, 0),
+                new Token(TokenType.Symbol, "}}", 0, 0),
+                new Token(TokenType.Special, "!", 0, 0),
             };
 
             var tokenizer = new MustacheTokenizer();
@@ -37,13 +37,13 @@ namespace PipServices3.Expressions.Mustache.Tokenizers
             string tokenString = "Hello, {{{ Name }}}!";
             Token[] expectedTokens =
             {
-                new Token(TokenType.Special, "Hello, "),
-                new Token(TokenType.Symbol, "{{{"),
-                new Token(TokenType.Whitespace, " "),
-                new Token(TokenType.Word, "Name"),
-                new Token(TokenType.Whitespace, " "),
-                new Token(TokenType.Symbol, "}}}"),
-                new Token(TokenType.Special, "!"),
+                new Token(TokenType.Special, "Hello, ", 0, 0),
+                new Token(TokenType.Symbol, "{{{", 0, 0),
+                new Token(TokenType.Whitespace, " ", 0, 0),
+                new Token(TokenType.Word, "Name", 0, 0),
+                new Token(TokenType.Whitespace, " ", 0, 0),
+                new Token(TokenType.Symbol, "}}}", 0, 0),
+                new Token(TokenType.Special, "!", 0, 0),
             };
 
             var tokenizer = new MustacheTokenizer();
@@ -59,11 +59,11 @@ namespace PipServices3.Expressions.Mustache.Tokenizers
             string tokenString = "{{ Name }}}";
             Token[] expectedTokens =
             {
-                new Token(TokenType.Symbol, "{{"),
-                new Token(TokenType.Whitespace, " "),
-                new Token(TokenType.Word, "Name"),
-                new Token(TokenType.Whitespace, " "),
-                new Token(TokenType.Symbol, "}}}")
+                new Token(TokenType.Symbol, "{{", 0, 0),
+                new Token(TokenType.Whitespace, " ", 0, 0),
+                new Token(TokenType.Word, "Name", 0, 0),
+                new Token(TokenType.Whitespace, " ", 0, 0),
+                new Token(TokenType.Symbol, "}}}", 0, 0)
             };
 
             var tokenizer = new MustacheTokenizer();
@@ -79,7 +79,7 @@ namespace PipServices3.Expressions.Mustache.Tokenizers
             string tokenString = "Hello, World!";
             Token[] expectedTokens =
             {
-                 new Token(TokenType.Special, "Hello, World!")
+                 new Token(TokenType.Special, "Hello, World!", 0, 0)
             };
 
             var tokenizer = new MustacheTokenizer();

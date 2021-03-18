@@ -21,6 +21,9 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
         /// <returns>The next token from the top of the stream.</returns>
         public override Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+
             // Process leading minus.
             if (scanner.Peek() == '-')
             {
@@ -67,7 +70,7 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
                 tokenValue.Append(scanner.Read());
             }
 
-            return new Token(TokenType.Float, token.Value + tokenValue.ToString());
+            return new Token(TokenType.Float, token.Value + tokenValue.ToString(), line, column);
         }
     }
 }

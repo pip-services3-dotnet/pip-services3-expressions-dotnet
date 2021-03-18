@@ -26,9 +26,12 @@ namespace PipServices3.Expressions.Csv
         {
             // Optimization...
             char nextSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+
             if (nextSymbol != '\n' && nextSymbol != '\r')
             {
-                return new Token(TokenType.Symbol, nextSymbol.ToString());
+                return new Token(TokenType.Symbol, nextSymbol.ToString(), line, column);
             }
             else
             {
@@ -36,6 +39,5 @@ namespace PipServices3.Expressions.Csv
                 return base.NextToken(scanner, tokenizer);
             }
         }
-
     }
 }

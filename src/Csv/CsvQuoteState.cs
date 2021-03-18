@@ -21,6 +21,8 @@ namespace PipServices3.Expressions.Csv
         public Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             char firstSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
             StringBuilder tokenValue = new StringBuilder();
             tokenValue.Append(firstSymbol);
 
@@ -41,7 +43,7 @@ namespace PipServices3.Expressions.Csv
                 }
             }
 
-            return new Token(TokenType.Quoted, tokenValue.ToString());
+            return new Token(TokenType.Quoted, tokenValue.ToString(), line, column);
         }
 
         /// <summary>

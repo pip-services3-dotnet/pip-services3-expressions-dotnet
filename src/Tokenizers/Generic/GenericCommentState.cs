@@ -21,6 +21,8 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             StringBuilder tokenValue = new StringBuilder();
             char nextSymbol;
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
             for (nextSymbol = scanner.Read(); !CharValidator.IsEof(nextSymbol)
                 && nextSymbol != '\n' && nextSymbol != '\r'; nextSymbol = scanner.Read())
             {
@@ -31,7 +33,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 scanner.Unread();
             }
 
-            return new Token(TokenType.Comment, tokenValue.ToString());
+            return new Token(TokenType.Comment, tokenValue.ToString(), line, column);
         }
     }
 }

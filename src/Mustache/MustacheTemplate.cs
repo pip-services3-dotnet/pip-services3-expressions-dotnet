@@ -212,9 +212,9 @@ namespace PipServices3.Expressions.Mustache
                         }
                         break;
                     case MustacheTokenType.Partial:
-                        throw new MustacheException(null, "PARTIALS_NOT_SUPPORTED", "Partials are not supported");
+                        throw new MustacheException(null, "PARTIALS_NOT_SUPPORTED", "Partials are not supported", token.Line, token.Column);
                     default:
-                        throw new MustacheException(null, "INTERNAL", "Internal error");
+                        throw new MustacheException(null, "INTERNAL", "Internal error", token.Line, token.Column);
                 }
             }
 

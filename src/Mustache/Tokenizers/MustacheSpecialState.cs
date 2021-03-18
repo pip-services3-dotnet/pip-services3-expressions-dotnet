@@ -24,6 +24,8 @@ namespace PipServices3.Mustache.Tokenizers
         public Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             StringBuilder tokenValue = new StringBuilder();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
 
             for (char nextSymbol = scanner.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
             {
@@ -39,7 +41,7 @@ namespace PipServices3.Mustache.Tokenizers
                 tokenValue.Append(nextSymbol);
             }
 
-            return new Token(TokenType.Special, tokenValue.ToString());
+            return new Token(TokenType.Special, tokenValue.ToString(), line, column);
         }
     }
 }

@@ -15,14 +15,14 @@ namespace PipServices3.Expressions.Mustache.Parsers
 
             List<MustacheToken> expectedTokens = new List<MustacheToken>
             {
-                new MustacheToken(MustacheTokenType.Value, "Hello, "),
-                new MustacheToken(MustacheTokenType.EscapedVariable, "NAME"),
-                new MustacheToken(MustacheTokenType.Section, "ESCLAMATION"),
-                new MustacheToken(MustacheTokenType.Value, "!"),
-                new MustacheToken(MustacheTokenType.SectionEnd, null),
-                new MustacheToken(MustacheTokenType.InvertedSection, "ESCLAMATION"),
-                new MustacheToken(MustacheTokenType.Value, "."),
-                new MustacheToken(MustacheTokenType.SectionEnd, "ESCLAMATION"),
+                new MustacheToken(MustacheTokenType.Value, "Hello, ", 0, 0),
+                new MustacheToken(MustacheTokenType.EscapedVariable, "NAME", 0, 0),
+                new MustacheToken(MustacheTokenType.Section, "ESCLAMATION", 0, 0),
+                new MustacheToken(MustacheTokenType.Value, "!", 0, 0),
+                new MustacheToken(MustacheTokenType.SectionEnd, null, 0, 0),
+                new MustacheToken(MustacheTokenType.InvertedSection, "ESCLAMATION", 0, 0),
+                new MustacheToken(MustacheTokenType.Value, ".", 0, 0),
+                new MustacheToken(MustacheTokenType.SectionEnd, "ESCLAMATION", 0, 0),
             };
 
             var tokens = parser.InitialTokens;
@@ -43,10 +43,10 @@ namespace PipServices3.Expressions.Mustache.Parsers
 
             List<MustacheToken> expectedTokens = new List<MustacheToken>
             {
-                new MustacheToken(MustacheTokenType.Value, "Hello, "),
-                new MustacheToken(MustacheTokenType.EscapedVariable, "NAME"),
-                new MustacheToken(MustacheTokenType.Section, "ESCLAMATION"),
-                new MustacheToken(MustacheTokenType.InvertedSection, "ESCLAMATION"),
+                new MustacheToken(MustacheTokenType.Value, "Hello, ", 0, 0),
+                new MustacheToken(MustacheTokenType.EscapedVariable, "NAME", 0, 0),
+                new MustacheToken(MustacheTokenType.Section, "ESCLAMATION", 0, 0),
+                new MustacheToken(MustacheTokenType.InvertedSection, "ESCLAMATION", 0, 0),
             };
 
             var tokens = parser.ResultTokens;
