@@ -29,5 +29,8 @@
     <Folder Include="Calculator\Variables\" />
     <Folder Include="Calculator\Functions\" />
     <Folder Include="Calculator\Parsers\" />
+    <Folder Include="Mustache\" />
+    <Folder Include="Mustache\Parsers" />
+    <Folder Include="Mustache\Tokenizers" />
   </ItemGroup>
 </Project>

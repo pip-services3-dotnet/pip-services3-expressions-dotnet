@@ -35,5 +35,8 @@
     <Folder Include="Calculator\Tokenizers\" />
     <Folder Include="Calculator\Parsers\" />
     <Folder Include="Csv\" />
+    <Folder Include="Mustache\" />
+    <Folder Include="Mustache\Parsers" />
+    <Folder Include="Mustache\Tokenizers" />
   </ItemGroup>
 </Project>

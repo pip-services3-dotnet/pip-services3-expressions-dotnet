@@ -28,9 +28,9 @@ namespace PipServices3.Expressions.Tokenizers
         private IWhitespaceState _whitespaceState;
         private IWordState _wordState;
 
-        private IPushbackReader _reader;
-        private Token _nextToken;
-        private TokenType _lastTokenType = TokenType.Unknown;
+        protected IPushbackReader _reader;
+        protected Token _nextToken;
+        protected TokenType _lastTokenType = TokenType.Unknown;
 
         protected AbstractTokenizer()
         {
@@ -153,7 +153,7 @@ namespace PipServices3.Expressions.Tokenizers
             return token;
         }
 
-        private Token ReadNextToken()
+        protected virtual Token ReadNextToken()
         {
             if (_reader == null)
             {
