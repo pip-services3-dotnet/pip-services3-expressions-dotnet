@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['xor',['Xor',['../class_pip_services3_1_1_expressions_1_1_variants_1_1_abstract_variant_operations.html#a591c4f9b1ea660f7a0c84159c482946a',1,'PipServices3.Expressions.Variants.AbstractVariantOperations.Xor()'],['../interface_pip_services3_1_1_expressions_1_1_variants_1_1_i_variant_operations.html#a8b38bc973a902b29069b96b475a75508',1,'PipServices3.Expressions.Variants.IVariantOperations.Xor()']]]
+  ['writefield_482',['WriteField',['../class_pip_services3_1_1_expressions_1_1_i_o_1_1_csv_writer.html#a8cb850dde1808bc69757bf12df3245f1',1,'PipServices3::Expressions::IO::CsvWriter']]],
+  ['writeline_483',['WriteLine',['../class_pip_services3_1_1_expressions_1_1_i_o_1_1_csv_writer.html#a0e0ea274617210cd7ad2c4953b656c7d',1,'PipServices3::Expressions::IO::CsvWriter']]]
 ];
