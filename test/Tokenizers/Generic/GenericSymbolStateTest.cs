@@ -14,21 +14,21 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             state.Add("<<", TokenType.Symbol);
             state.Add("<>", TokenType.Symbol);
 
-            var reader = new StringPushbackReader("<A<<<>");
+            var scanner = new StringScanner("<A<<<>");
 
-            var token = state.NextToken(reader, null);
+            var token = state.NextToken(scanner, null);
             Assert.Equal("<", token.Value);
             Assert.Equal(TokenType.Symbol, token.Type);
 
-            token = state.NextToken(reader, null);
+            token = state.NextToken(scanner, null);
             Assert.Equal("A", token.Value);
             Assert.Equal(TokenType.Symbol, token.Type);
 
-            token = state.NextToken(reader, null);
+            token = state.NextToken(scanner, null);
             Assert.Equal("<<", token.Value);
             Assert.Equal(TokenType.Symbol, token.Type);
 
-            token = state.NextToken(reader, null);
+            token = state.NextToken(scanner, null);
             Assert.Equal("<>", token.Value);
             Assert.Equal(TokenType.Symbol, token.Type);
         }

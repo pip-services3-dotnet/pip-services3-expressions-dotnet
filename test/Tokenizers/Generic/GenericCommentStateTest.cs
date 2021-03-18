@@ -11,13 +11,13 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var state = new GenericCommentState();
 
-            var reader = new StringPushbackReader("# Comment \r# Comment ");
-            var token = state.NextToken(reader, null);
+            var scanner = new StringScanner("# Comment \r# Comment ");
+            var token = state.NextToken(scanner, null);
             Assert.Equal("# Comment ", token.Value);
             Assert.Equal(TokenType.Comment, token.Type);
 
-            reader = new StringPushbackReader("# Comment \n# Comment ");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("# Comment \n# Comment ");
+            token = state.NextToken(scanner, null);
             Assert.Equal("# Comment ", token.Value);
             Assert.Equal(TokenType.Comment, token.Type);
         }

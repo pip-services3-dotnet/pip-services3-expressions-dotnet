@@ -56,7 +56,7 @@ namespace PipServices3.Expressions.Mustache.Tokenizers
         {
             Token token;
 
-            if (_reader == null)
+            if (_scanner == null)
                 return null;
 
             // Check for initial state
@@ -66,7 +66,7 @@ namespace PipServices3.Expressions.Mustache.Tokenizers
             // Process quotes
             if (_special)
             {
-                token = _specialState.NextToken(_reader, this);
+                token = _specialState.NextToken(_scanner, this);
                 if (token != null && token.Value != "")
                 {
                     return token;

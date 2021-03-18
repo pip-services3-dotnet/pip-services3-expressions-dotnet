@@ -7,29 +7,29 @@ using PipServices3.Expressions.Tokenizers.Utilities;
 namespace PipServices3.Expressions.Tokenizers.Generic
 {
     /// <summary>
-    /// A quoteState returns a quoted string token from a reader. This state will collect characters
+    /// A quoteState returns a quoted string token from a scanner. This state will collect characters
     /// until it sees a match to the character that the tokenizer used to switch to this state.
     /// For example, if a tokenizer uses a double-quote character to enter this state,
     /// then <code>nextToken()</code> will search for another double-quote until it finds one
-    /// or finds the end of the reader.
+    /// or finds the end of the scanner.
     /// </summary>
     public class GenericQuoteState : IQuoteState
     {
         /// <summary>
-        /// Return a quoted string token from a reader. This method will collect
+        /// Return a quoted string token from a scanner. This method will collect
         /// characters until it sees a match to the character that the tokenizer used
         /// to switch to this state.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <param name="tokenizer"></param>
-        /// <returns>A quoted string token from a reader.</returns>
-        public virtual Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        /// <returns>A quoted string token from a scanner.</returns>
+        public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
-            char firstSymbol = reader.Read();
+            char firstSymbol = scanner.Read();
             StringBuilder tokenValue = new StringBuilder();
             tokenValue.Append(firstSymbol);
 
-            for (char nextSymbol = reader.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = reader.Read())
+            for (char nextSymbol = scanner.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
             {
                 tokenValue.Append(nextSymbol);
                 if (nextSymbol == firstSymbol)

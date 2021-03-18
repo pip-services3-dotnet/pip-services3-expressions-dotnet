@@ -26,7 +26,6 @@
   <ItemGroup>
     <Folder Include="Variants\" />
     <Folder Include="Tokenizers\" />
-    <Folder Include="IO\" />
     <Folder Include="Tokenizers\Utilities\" />
     <Folder Include="Tokenizers\Generic\" />
     <Folder Include="Calculator\" />

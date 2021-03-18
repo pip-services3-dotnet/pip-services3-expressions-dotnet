@@ -15,23 +15,23 @@ namespace PipServices3.Expressions.Csv
         /// <summary>
         /// Gets the next token from the stream started from the character linked to this state.
         /// </summary>
-        /// <param name="reader">A textual string to be tokenized.</param>
+        /// <param name="scanner">A textual string to be tokenized.</param>
         /// <param name="tokenizer">A tokenizer class that controls the process.</param>
         /// <returns>The next token from the top of the stream.</returns>
-        public Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
-            char firstSymbol = reader.Read();
+            char firstSymbol = scanner.Read();
             StringBuilder tokenValue = new StringBuilder();
             tokenValue.Append(firstSymbol);
 
-            for (char nextSymbol = reader.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = reader.Read())
+            for (char nextSymbol = scanner.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
             {
                 tokenValue.Append(nextSymbol);
                 if (nextSymbol == firstSymbol)
                 {
-                    if (reader.Peek() == firstSymbol)
+                    if (scanner.Peek() == firstSymbol)
                     {
-                        nextSymbol = reader.Read();
+                        nextSymbol = scanner.Read();
                         tokenValue.Append(nextSymbol);
                     }
                     else

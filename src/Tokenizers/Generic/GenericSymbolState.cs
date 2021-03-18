@@ -31,14 +31,14 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         //}
 
         /// <summary>
-        /// Return a symbol token from a reader.
+        /// Return a symbol token from a scanner.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <param name="tokenizer"></param>
-        /// <returns>A symbol token from a reader.</returns>
-        public virtual Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        /// <returns>A symbol token from a scanner.</returns>
+        public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
-            return _symbols.NextToken(reader);
+            return _symbols.NextToken(scanner);
         }
 
         /// <summary>

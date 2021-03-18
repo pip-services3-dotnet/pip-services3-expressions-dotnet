@@ -14,13 +14,13 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Ignore everything up to a closing star and slash, and then return the tokenizer's next token.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <returns></returns>
-        protected static string GetMultiLineComment(IPushbackReader reader)
+        protected static string GetMultiLineComment(IScanner scanner)
         {
             StringBuilder result = new StringBuilder();
             char lastSymbol = '\0';
-            for (char nextSymbol = reader.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = reader.Read())
+            for (char nextSymbol = scanner.Read(); !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
             {
                 result.Append(nextSymbol);
                 if (lastSymbol == '*' && nextSymbol == '/')
@@ -35,21 +35,21 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Ignore everything up to an end-of-line and return the tokenizer's next token.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <returns></returns>
-        protected static string GetSingleLineComment(IPushbackReader reader)
+        protected static string GetSingleLineComment(IScanner scanner)
         {
             StringBuilder result = new StringBuilder();
             char nextSymbol;
-            for (nextSymbol = reader.Read();
+            for (nextSymbol = scanner.Read();
                 !CharValidator.IsEof(nextSymbol) && !CharValidator.IsEol(nextSymbol);
-                nextSymbol = reader.Read())
+                nextSymbol = scanner.Read())
             {
                 result.Append(nextSymbol);
             }
             if (CharValidator.IsEol(nextSymbol))
             {
-                reader.Pushback(nextSymbol);
+                scanner.Unread();
             }
             return result.ToString();
         }
@@ -57,38 +57,38 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Either delegate to a comment-handling state, or return a token with just a slash in it.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <param name="tokenizer"></param>
         /// <returns>Either just a slash token, or the results of delegating to a comment-handling state.</returns>
-        public virtual Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
-            char firstSymbol = reader.Read();
+            char firstSymbol = scanner.Read();
             if (firstSymbol != '/')
             {
-                reader.Pushback(firstSymbol);
+                scanner.Unread();
                 throw new InvalidProgramException("Incorrect usage of CppCommentState.");
             }
 
-            char secondSymbol = reader.Read();
+            char secondSymbol = scanner.Read();
             if (secondSymbol == '*')
             {
-                return new Token(TokenType.Comment, "/*" + GetMultiLineComment(reader));
+                return new Token(TokenType.Comment, "/*" + GetMultiLineComment(scanner));
             }
             else if (secondSymbol == '/')
             {
-                return new Token(TokenType.Comment, "//" + GetSingleLineComment(reader));
+                return new Token(TokenType.Comment, "//" + GetSingleLineComment(scanner));
             }
             else
             {
                 if (!CharValidator.IsEof(secondSymbol))
                 {
-                    reader.Pushback(secondSymbol);
+                    scanner.Unread();
                 }
                 if (!CharValidator.IsEof(firstSymbol))
                 {
-                    reader.Pushback(firstSymbol);
+                    scanner.Unread();
                 }
-                return tokenizer.SymbolState.NextToken(reader, tokenizer);
+                return tokenizer.SymbolState.NextToken(scanner, tokenizer);
             }
         }
     }

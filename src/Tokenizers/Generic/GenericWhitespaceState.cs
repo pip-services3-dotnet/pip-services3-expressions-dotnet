@@ -24,21 +24,21 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Ignore whitespace (such as blanks and tabs), and return the tokenizer's next token.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <param name="tokenizer"></param>
         /// <returns>The tokenizer's next token</returns>
-        public Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             char nextSymbol;
             StringBuilder tokenValue = new StringBuilder();
-            for (nextSymbol = reader.Read(); _map.Lookup(nextSymbol); nextSymbol = reader.Read())
+            for (nextSymbol = scanner.Read(); _map.Lookup(nextSymbol); nextSymbol = scanner.Read())
             {
                 tokenValue.Append(nextSymbol);
             }
 
             if (!CharValidator.IsEof(nextSymbol))
             {
-                reader.Pushback(nextSymbol);
+                scanner.Unread();
             }
 
             return new Token(TokenType.Whitespace, tokenValue.ToString());

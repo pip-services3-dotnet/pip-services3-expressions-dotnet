@@ -24,7 +24,6 @@
     <Folder Include="Tokenizers\Generic\" />
     <Folder Include="Calculator\" />
     <Folder Include="Calculator\Tokenizers\" />
-    <Folder Include="IO\" />
     <Folder Include="Csv\" />
     <Folder Include="Calculator\Variables\" />
     <Folder Include="Calculator\Functions\" />
