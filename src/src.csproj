@@ -6,7 +6,7 @@
     <RootNamespace>PipServices3.Expressions</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <Authors>Sergey Seroukhov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2020</Copyright>
     <Description>Tokenizers, parsers and expression calculators for Pip.Services in .NET</Description>
@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PipServices3.Commons" Version="3.1.1" />
-    <PackageReference Include="PipServices3.Components" Version="3.1.1" />
+    <PackageReference Include="PipServices3.Commons" Version="3.1.2" />
+    <PackageReference Include="PipServices3.Components" Version="3.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Variants\" />
