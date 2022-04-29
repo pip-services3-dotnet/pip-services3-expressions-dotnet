@@ -7,7 +7,7 @@ using PipServices3.Expressions.Tokenizers.Utilities;
 namespace PipServices3.Expressions.Tokenizers.Generic
 {
     /// <summary>
-    /// A NumberState object returns a number from a reader. This state's idea of a number allows
+    /// A NumberState object returns a number from a scanner. This state's idea of a number allows
     /// an optional, initial minus sign, followed by one or more digits. A decimal point and another string
     /// of digits may follow these digits.
     /// </summary>
@@ -16,26 +16,28 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Gets the next token from the stream started from the character linked to this state.
         /// </summary>
-        /// <param name="reader">A textual string to be tokenized.</param>
+        /// <param name="scanner">A textual string to be tokenized.</param>
         /// <param name="tokenizer">A tokenizer class that controls the process.</param>
         /// <returns>The next token from the top of the stream.</returns>
-        public virtual Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             bool absorbedDot = false;
             bool gotADigit = false;
             StringBuilder tokenValue = new StringBuilder("");
-            char nextSymbol = reader.Read();
+            char nextSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
 
             // Parses leading minus.
             if (nextSymbol == '-')
             {
                 tokenValue.Append('-');
-                nextSymbol = reader.Read();
+                nextSymbol = scanner.Read();
             }
 
             // Parses digits before decimal separator.
             for (; CharValidator.IsDigit(nextSymbol)
-                && !CharValidator.IsEof(nextSymbol); nextSymbol = reader.Read())
+                && !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
             {
                 gotADigit = true;
                 tokenValue.Append(nextSymbol);
@@ -46,11 +48,11 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             {
                 absorbedDot = true;
                 tokenValue.Append('.');
-                nextSymbol = reader.Read();
+                nextSymbol = scanner.Read();
 
                 // Absorb all digits.
                 for (; CharValidator.IsDigit(nextSymbol)
-                    && !CharValidator.IsEof(nextSymbol); nextSymbol = reader.Read())
+                    && !CharValidator.IsEof(nextSymbol); nextSymbol = scanner.Read())
                 {
                     gotADigit = true;
                     tokenValue.Append(nextSymbol);
@@ -60,16 +62,16 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             // Pushback last unprocessed symbol.
             if (!CharValidator.IsEof(nextSymbol))
             {
-                reader.Pushback(nextSymbol);
+                scanner.Unread();
             }
 
             // Process the result.
             if (!gotADigit)
             {
-                reader.PushbackString(tokenValue.ToString());
+                scanner.UnreadMany(tokenValue.ToString().Length);
                 if (tokenizer != null && tokenizer.SymbolState != null)
                 {
-                    return tokenizer.SymbolState.NextToken(reader, tokenizer);
+                    return tokenizer.SymbolState.NextToken(scanner, tokenizer);
                 }
                 else
                 {
@@ -77,7 +79,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 }
             }
 
-            return new Token(absorbedDot ? TokenType.Float : TokenType.Integer, tokenValue.ToString());
+            return new Token(absorbedDot ? TokenType.Float : TokenType.Integer, tokenValue.ToString(), line, column);
         }
     }
 }

@@ -10,8 +10,14 @@ namespace PipServices3.Expressions.Calculator
     [DataContract]
     public class SyntaxException : BadRequestException
     {
-        public SyntaxException(string correlationId = null, string code = null,
-            string message = null, Exception innerException = null)
-            : base(correlationId, code, message, innerException) { }
+        public SyntaxException(string correlationId = null, string code = null, string message = null, 
+            int line = 0, int column = 0, Exception innerException = null) :
+
+                base(correlationId, code, 
+                    line != 0 || column != 0 ? message + " at line " + line + " and column " + column : message, 
+                    innerException)
+        {
+
+        }
     }
 }

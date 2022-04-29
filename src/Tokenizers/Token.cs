@@ -12,16 +12,22 @@ namespace PipServices3.Expressions.Tokenizers
     {
         private TokenType _type;
         private string _value;
+        private int _line;
+        private int _column;
 
         /// <summary>
         /// Constructs this token with type and value.
         /// </summary>
         /// <param name="type">The type of this token.</param>
         /// <param name="value">The token string value.</param>
-        public Token(TokenType type, string value)
+        /// <param name="line`">The line number where the token is.</param>
+        /// <param name="column">The column number where the token is.</param>
+        public Token(TokenType type, string value, int line, int column)
         {
             _type = type;
             _value = value;
+            _line = line;
+            _column = column;
         }
 
         /// <summary>
@@ -40,6 +46,22 @@ namespace PipServices3.Expressions.Tokenizers
             get { return _value; }
         }
 
+        /// <summary>
+        /// The line number where the token is.
+        /// </summary>
+        public int Line
+        {
+            get { return _line; }
+        }
+
+        /// <summary>
+        /// The column number where the token is.
+        /// </summary>
+        public int Column
+        {
+            get { return _column; }
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is Token)
@@ -55,6 +77,5 @@ namespace PipServices3.Expressions.Tokenizers
             return base.GetHashCode();
         }
     }
-
 }
 

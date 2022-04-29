@@ -11,13 +11,13 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var state = new GenericQuoteState();
 
-            var reader = new StringPushbackReader("'ABC#DEF'#");
-            var token = state.NextToken(reader, null);
+            var scanner = new StringScanner("'ABC#DEF'#");
+            var token = state.NextToken(scanner, null);
             Assert.Equal("'ABC#DEF'", token.Value);
             Assert.Equal(TokenType.Quoted, token.Type);
 
-            reader = new StringPushbackReader("'ABC#DEF''");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("'ABC#DEF''");
+            token = state.NextToken(scanner, null);
             Assert.Equal("'ABC#DEF'", token.Value);
             Assert.Equal(TokenType.Quoted, token.Type);
         }

@@ -28,9 +28,9 @@ namespace PipServices3.Expressions.Tokenizers
         private IWhitespaceState _whitespaceState;
         private IWordState _wordState;
 
-        private IPushbackReader _reader;
-        private Token _nextToken;
-        private TokenType _lastTokenType = TokenType.Unknown;
+        protected IScanner _scanner;
+        protected Token _nextToken;
+        protected TokenType _lastTokenType = TokenType.Unknown;
 
         protected AbstractTokenizer()
         {
@@ -129,12 +129,12 @@ namespace PipServices3.Expressions.Tokenizers
             _map.Clear();
         }
 
-        public IPushbackReader Reader
+        public IScanner Scanner
         {
-            get { return _reader; }
+            get { return _scanner; }
             set
             {
-                _reader = value;
+                _scanner = value;
                 _nextToken = null;
                 _lastTokenType = TokenType.Unknown;
             }
@@ -153,19 +153,20 @@ namespace PipServices3.Expressions.Tokenizers
             return token;
         }
 
-        private Token ReadNextToken()
+        protected virtual Token ReadNextToken()
         {
-            if (_reader == null)
-            {
+            if (_scanner == null)
                 return null;
-            }
+
+            int line = this._scanner.PeekLine();
+            int column = this._scanner.PeekColumn();
 
             Token token = null;
 
             while (true)
             {
                 // Read character
-                char nextChar = _reader.Peek();
+                char nextChar = _scanner.Peek();
 
                 // If reached Eof then exit
                 if (CharValidator.IsEof(nextChar))
@@ -178,13 +179,13 @@ namespace PipServices3.Expressions.Tokenizers
                 ITokenizerState state = GetCharacterState(nextChar);
                 if (state != null)
                 {
-                    token = state.NextToken(_reader, this);
+                    token = state.NextToken(_scanner, this);
                 }
 
                 // Check for unknown characters and endless loops...
                 if (token == null || string.IsNullOrEmpty(token.Value))
                 {
-                    token = new Token(TokenType.Unknown, _reader.Read().ToString());
+                    token = new Token(TokenType.Unknown, _scanner.Read().ToString(), line, column);
                 }
 
                 // Skip unknown characters if option set.
@@ -197,7 +198,7 @@ namespace PipServices3.Expressions.Tokenizers
                 // Decode strings is option set.
                 if (state is IQuoteState && _decodeStrings)
                 {
-                    token = new Token(token.Type, QuoteState.DecodeString(token.Value, nextChar));
+                    token = new Token(token.Type, QuoteState.DecodeString(token.Value, nextChar), line, column);
                 }
 
                 // Skips comments if option set.
@@ -219,7 +220,7 @@ namespace PipServices3.Expressions.Tokenizers
                 // Unifies whitespaces if option set.
                 if (token.Type == TokenType.Whitespace && _mergeWhitespaces)
                 {
-                    token = new Token(TokenType.Whitespace, " ");
+                    token = new Token(TokenType.Whitespace, " ", line, column);
                 }
 
                 // Unifies numbers if option set.
@@ -228,7 +229,7 @@ namespace PipServices3.Expressions.Tokenizers
                     || token.Type == TokenType.Float
                     || token.Type == TokenType.HexDecimal))
                 {
-                    token = new Token(TokenType.Number, token.Value);
+                    token = new Token(TokenType.Number, token.Value, line, column);
                 }
 
                 break;
@@ -237,7 +238,7 @@ namespace PipServices3.Expressions.Tokenizers
             // Adds an Eof if option is not set.
             if (token == null && _lastTokenType != TokenType.Eof && !_skipEof)
             {
-                token = new Token(TokenType.Eof, null);
+                token = new Token(TokenType.Eof, null, line, column);
             }
 
             // Assigns the last token type
@@ -246,9 +247,9 @@ namespace PipServices3.Expressions.Tokenizers
             return token;
         }
 
-        public IList<Token> TokenizeStream(IPushbackReader reader)
+        public IList<Token> TokenizeStream(IScanner scanner)
         {
-            Reader = reader;
+            Scanner = scanner;
             IList<Token> tokenList = new List<Token>();
             for (Token token = NextToken(); token != null; token = NextToken())
             {
@@ -259,13 +260,13 @@ namespace PipServices3.Expressions.Tokenizers
 
         public IList<Token> TokenizeBuffer(string buffer)
         {
-            StringPushbackReader reader = new StringPushbackReader(buffer);
-            return TokenizeStream(reader);
+            StringScanner scanner = new StringScanner(buffer);
+            return TokenizeStream(scanner);
         }
 
-        public IList<string> TokenizeStreamToStrings(IPushbackReader reader)
+        public IList<string> TokenizeStreamToStrings(IScanner scanner)
         {
-            Reader = reader;
+            Scanner = scanner;
             IList<string> stringList = new List<string>();
             for (Token token = NextToken(); token != null; token = NextToken())
             {
@@ -276,8 +277,8 @@ namespace PipServices3.Expressions.Tokenizers
 
         public IList<string> TokenizeBufferToStrings(string buffer)
         {
-            StringPushbackReader reader = new StringPushbackReader(buffer);
-            return TokenizeStreamToStrings(reader);
+            StringScanner scanner = new StringScanner(buffer);
+            return TokenizeStreamToStrings(scanner);
         }
     }
 }

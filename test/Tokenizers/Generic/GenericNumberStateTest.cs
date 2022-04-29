@@ -11,11 +11,11 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var state = new GenericNumberState();
 
-            var reader = new StringPushbackReader("ABC");
+            var scanner = new StringScanner("ABC");
             var failed = false;
             try
             {
-                state.NextToken(reader, null);
+                state.NextToken(scanner, null);
             }
             catch
             {
@@ -23,28 +23,28 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             }
             Assert.True(failed);
 
-            reader = new StringPushbackReader("123#");
-            var token = state.NextToken(reader, null);
+            scanner = new StringScanner("123#");
+            var token = state.NextToken(scanner, null);
             Assert.Equal("123", token.Value);
             Assert.Equal(TokenType.Integer, token.Type);
 
-            reader = new StringPushbackReader("-123#");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("-123#");
+            token = state.NextToken(scanner, null);
             Assert.Equal("-123", token.Value);
             Assert.Equal(TokenType.Integer, token.Type);
             
-            reader = new StringPushbackReader("123.#");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("123.#");
+            token = state.NextToken(scanner, null);
             Assert.Equal("123.", token.Value);
             Assert.Equal(TokenType.Float, token.Type);
 
-            reader = new StringPushbackReader("123.456#");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("123.456#");
+            token = state.NextToken(scanner, null);
             Assert.Equal("123.456", token.Value);
             Assert.Equal(TokenType.Float, token.Type);
 
-            reader = new StringPushbackReader("-123.456#");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("-123.456#");
+            token = state.NextToken(scanner, null);
             Assert.Equal("-123.456", token.Value);
             Assert.Equal(TokenType.Float, token.Type);
         }

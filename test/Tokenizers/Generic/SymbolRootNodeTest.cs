@@ -14,18 +14,18 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             node.Add("<<", TokenType.Symbol);
             node.Add("<>", TokenType.Symbol);
 
-            var reader = new StringPushbackReader("<A<<<>");
+            var scanner = new StringScanner("<A<<<>");
 
-            var token = node.NextToken(reader);
+            var token = node.NextToken(scanner);
             Assert.Equal("<", token.Value);
 
-            token = node.NextToken(reader);
+            token = node.NextToken(scanner);
             Assert.Equal("A", token.Value);
 
-            token = node.NextToken(reader);
+            token = node.NextToken(scanner);
             Assert.Equal("<<", token.Value);
 
-            token = node.NextToken(reader);
+            token = node.NextToken(scanner);
             Assert.Equal("<>", token.Value);
         }
 
@@ -34,9 +34,9 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var node = new SymbolRootNode();
 
-            var reader = new StringPushbackReader("<A");
+            var scanner = new StringScanner("<A");
 
-            var token = node.NextToken(reader);
+            var token = node.NextToken(scanner);
             Assert.Equal("<", token.Value);
             Assert.Equal(TokenType.Symbol, token.Type);
         }

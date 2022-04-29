@@ -36,18 +36,20 @@ namespace PipServices3.Expressions.Calculator.Tokenizers
         /// <summary>
         /// Gets the next token from the stream started from the character linked to this state.
         /// </summary>
-        /// <param name="reader">A textual string to be tokenized.</param>
+        /// <param name="scanner">A textual string to be tokenized.</param>
         /// <param name="tokenizer">A tokenizer class that controls the process.</param>
         /// <returns>The next token from the top of the stream.</returns>
-        public override Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public override Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
-            Token token = base.NextToken(reader, tokenizer);
+            Token token = base.NextToken(scanner, tokenizer);
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
 
             foreach (string keyword in Keywords)
             {
                 if (keyword.Equals(token.Value, StringComparison.OrdinalIgnoreCase))
                 {
-                    return new Token(TokenType.Keyword, token.Value);
+                    return new Token(TokenType.Keyword, token.Value, line, column);
                 }
             }
             return token;

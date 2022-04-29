@@ -38,24 +38,28 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         }
 
         /// <summary>
-        /// Return a symbol string from a reader.
+        /// Return a symbol string from a scanner.
         /// </summary>
-        /// <param name="reader">A reader to read from</param>
-        /// <param name="firstChar">The first character of this symbol, already read from the reader.</param>
-        /// <returns>A symbol string from a reader</returns>
-        public Token NextToken(IPushbackReader reader)
+        /// <param name="scanner">A scanner to read from</param>
+        /// <param name="firstChar">The first character of this symbol, already read from the scanner.</param>
+        /// <returns>A symbol string from a scanner</returns>
+        public Token NextToken(IScanner scanner)
         {
-            char nextSymbol = reader.Read();
+            char nextSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+
             SymbolNode childNode = FindChildWithChar(nextSymbol);
+            
             if (childNode != null)
             {
-                childNode = childNode.DeepestRead(reader);
-                childNode = childNode.UnreadToValid(reader);
-                return new Token(childNode.TokenType, childNode.Ancestry());
+                childNode = childNode.DeepestRead(scanner);
+                childNode = childNode.UnreadToValid(scanner);
+                return new Token(childNode.TokenType, childNode.Ancestry(), line, column);
             }
             else
             {
-                return new Token(TokenType.Symbol, nextSymbol.ToString());
+                return new Token(TokenType.Symbol, nextSymbol.ToString(), line, column);
             }
         }
     }

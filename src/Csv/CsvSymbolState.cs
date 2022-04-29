@@ -22,20 +22,22 @@ namespace PipServices3.Expressions.Csv
             Add("\n\r", TokenType.Eol);
         }
 
-        public override Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public override Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             // Optimization...
-            char nextSymbol = reader.Read();
+            char nextSymbol = scanner.Read();
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+
             if (nextSymbol != '\n' && nextSymbol != '\r')
             {
-                return new Token(TokenType.Symbol, nextSymbol.ToString());
+                return new Token(TokenType.Symbol, nextSymbol.ToString(), line, column);
             }
             else
             {
-                reader.Pushback(nextSymbol);
-                return base.NextToken(reader, tokenizer);
+                scanner.Unread();
+                return base.NextToken(scanner, tokenizer);
             }
         }
-
     }
 }

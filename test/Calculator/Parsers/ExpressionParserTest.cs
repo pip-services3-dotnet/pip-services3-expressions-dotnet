@@ -13,14 +13,14 @@ namespace PipServices3.Expressions.Calculator.Parsers
             parser.Expression = "(2+2)*ABS(-2)";
 
             var expectedTokens = new ExpressionToken[] {
-                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2)),
-                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2)),
-                new ExpressionToken(ExpressionTokenType.Plus, Variant.Empty),
-                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2)),
-                new ExpressionToken(ExpressionTokenType.Unary, Variant.Empty),
-                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(1)),
-                new ExpressionToken(ExpressionTokenType.Function, Variant.FromString("ABS")),
-                new ExpressionToken(ExpressionTokenType.Star, Variant.Empty),
+                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2), 0, 0),
+                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2), 0, 0),
+                new ExpressionToken(ExpressionTokenType.Plus, Variant.Empty, 0, 0),
+                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(2), 0, 0),
+                new ExpressionToken(ExpressionTokenType.Unary, Variant.Empty, 0, 0),
+                new ExpressionToken(ExpressionTokenType.Constant, Variant.FromInteger(1), 0, 0),
+                new ExpressionToken(ExpressionTokenType.Function, Variant.FromString("ABS"), 0, 0),
+                new ExpressionToken(ExpressionTokenType.Star, Variant.Empty, 0, 0),
             };
 
             var tokens = parser.ResultTokens;

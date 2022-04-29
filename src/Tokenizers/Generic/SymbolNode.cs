@@ -92,18 +92,18 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Find the descendant that takes as many characters as possible from the input.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <returns></returns>
-        internal SymbolNode DeepestRead(IPushbackReader reader)
+        internal SymbolNode DeepestRead(IScanner scanner)
         {
-            char nextSymbol = reader.Read();
+            char nextSymbol = scanner.Read();
             SymbolNode childNode = !CharValidator.IsEof(nextSymbol) ? FindChildWithChar(nextSymbol) : null;
             if (childNode == null)
             {
-                reader.Pushback(nextSymbol);
+                scanner.Unread();
                 return this;
             }
-            return childNode.DeepestRead(reader);
+            return childNode.DeepestRead(scanner);
         }
 
         /// <summary>
@@ -136,14 +136,14 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// Unwind to a valid node; this node is "valid" if its ancestry represents a complete symbol.
         /// If this node is not valid, put back the character and ask the parent to unwind.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <returns></returns>
-        internal SymbolNode UnreadToValid(IPushbackReader reader)
+        internal SymbolNode UnreadToValid(IScanner scanner)
         {
             if (!_valid && _parent != null)
             {
-                reader.Pushback(_character);
-                return _parent.UnreadToValid(reader);
+                scanner.Unread();
+                return _parent.UnreadToValid(scanner);
             }
             return this;
         }

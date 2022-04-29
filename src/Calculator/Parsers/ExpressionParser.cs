@@ -175,9 +175,11 @@ namespace PipServices3.Expressions.Calculator.Parsers
         /// </summary>
         /// <param name="type">The type of the token to be added.</param>
         /// <param name="value">The value of the token to be added.</param>
-        private void AddTokenToResult(ExpressionTokenType type, Variant value)
+        /// <param name="line"> The line number where the token is.</param>
+        /// <param name="column">The column number where the token is.</param>
+        private void AddTokenToResult(ExpressionTokenType type, Variant value, int line, int column)
         {
-            _resultTokens.Add(new ExpressionToken(type, value));
+            _resultTokens.Add(new ExpressionToken(type, value, line, column));
         }
 
         /// <summary>
@@ -331,9 +333,9 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 }
                 if (tokenType == ExpressionTokenType.Unknown)
                 {
-                    throw new SyntaxException(null, SyntaxErrorCode.UnknownSymbol, string.Format("Unknown symbol {0}.", token.Value));
+                    throw new SyntaxException(null, SyntaxErrorCode.UnknownSymbol, string.Format("Unknown symbol {0}.", token.Value), token.Line, token.Column);
                 }
-                _initialTokens.Add(new ExpressionToken(tokenType, tokenValue));
+                _initialTokens.Add(new ExpressionToken(tokenType, tokenValue, token.Line, token.Column));
             }
         }
 
@@ -353,7 +355,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 {
                     MoveToNextToken();
                     PerformSyntaxAnalysisAtLevel1();
-                    AddTokenToResult(token.Type, Variant.Empty);
+                    AddTokenToResult(token.Type, Variant.Empty, token.Line, token.Column);
                     continue;
                 }
                 break;
@@ -371,7 +373,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
             {
                 MoveToNextToken();
                 PerformSyntaxAnalysisAtLevel2();
-                AddTokenToResult(token.Type, Variant.Empty);
+                AddTokenToResult(token.Type, Variant.Empty, token.Line, token.Column);
             }
             else
             {
@@ -398,7 +400,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 {
                     MoveToNextToken();
                     PerformSyntaxAnalysisAtLevel3();
-                    AddTokenToResult(token.Type, Variant.Empty);
+                    AddTokenToResult(token.Type, Variant.Empty, token.Line, token.Column);
                     continue;
                 }
                 break;
@@ -421,26 +423,26 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 {
                     MoveToNextToken();
                     PerformSyntaxAnalysisAtLevel4();
-                    AddTokenToResult(token.Type, Variant.Empty);
+                    AddTokenToResult(token.Type, Variant.Empty, token.Line, token.Column);
                 }
                 else if (MatchTokensWithTypes(ExpressionTokenType.Not, ExpressionTokenType.Like))
                 {
                     PerformSyntaxAnalysisAtLevel4();
-                    AddTokenToResult(ExpressionTokenType.NotLike, Variant.Empty);
+                    AddTokenToResult(ExpressionTokenType.NotLike, Variant.Empty, token.Line, token.Column);
                 }
                 else if (MatchTokensWithTypes(ExpressionTokenType.Is, ExpressionTokenType.Null))
                 {
-                    AddTokenToResult(ExpressionTokenType.IsNull, Variant.Empty);
+                    AddTokenToResult(ExpressionTokenType.IsNull, Variant.Empty, token.Line, token.Column);
                 }
                 else if (MatchTokensWithTypes(ExpressionTokenType.Is, ExpressionTokenType.Not,
                     ExpressionTokenType.Null))
                 {
-                    AddTokenToResult(ExpressionTokenType.IsNotNull, Variant.Empty);
+                    AddTokenToResult(ExpressionTokenType.IsNotNull, Variant.Empty, token.Line, token.Column);
                 }
                 else if (MatchTokensWithTypes(ExpressionTokenType.Not, ExpressionTokenType.In))
                 {
                     PerformSyntaxAnalysisAtLevel4();
-                    AddTokenToResult(ExpressionTokenType.NotIn, Variant.Empty);
+                    AddTokenToResult(ExpressionTokenType.NotIn, Variant.Empty, token.Line, token.Column);
                 }
                 else
                 {
@@ -465,7 +467,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 {
                     MoveToNextToken();
                     PerformSyntaxAnalysisAtLevel5();
-                    AddTokenToResult(token.Type, Variant.Empty);
+                    AddTokenToResult(token.Type, Variant.Empty, token.Line, token.Column);
                     continue;
                 }
                 break;
@@ -489,7 +491,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 {
                     MoveToNextToken();
                     PerformSyntaxAnalysisAtLevel6();
-                    AddTokenToResult(token.Type, Variant.Empty);
+                    AddTokenToResult(token.Type, Variant.Empty, token.Line, token.Column);
                     continue;
                 }
                 break;
@@ -511,7 +513,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
             }
             else if (unaryToken.Type == ExpressionTokenType.Minus)
             {
-                unaryToken = new ExpressionToken(ExpressionTokenType.Unary, unaryToken.Value);
+                unaryToken = new ExpressionToken(ExpressionTokenType.Unary, unaryToken.Value, unaryToken.Line, unaryToken.Column);
                 MoveToNextToken();
             }
             else
@@ -527,13 +529,13 @@ namespace PipServices3.Expressions.Calculator.Parsers
             if (primitiveToken.Type == ExpressionTokenType.Variable
                 && nextToken != null && nextToken.Type == ExpressionTokenType.LeftBrace)
             {
-                primitiveToken = new ExpressionToken(ExpressionTokenType.Function, primitiveToken.Value);
+                primitiveToken = new ExpressionToken(ExpressionTokenType.Function, primitiveToken.Value, primitiveToken.Line, primitiveToken.Column);
             }
 
             if (primitiveToken.Type == ExpressionTokenType.Constant)
             {
                 MoveToNextToken();
-                AddTokenToResult(primitiveToken.Type, primitiveToken.Value);
+                AddTokenToResult(primitiveToken.Type, primitiveToken.Value, primitiveToken.Line, primitiveToken.Column);
             }
             else if (primitiveToken.Type == ExpressionTokenType.Variable)
             {
@@ -545,7 +547,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                     _variableNames.Add(temp);
                 }
 
-                AddTokenToResult(primitiveToken.Type, primitiveToken.Value);
+                AddTokenToResult(primitiveToken.Type, primitiveToken.Value, primitiveToken.Line, primitiveToken.Column);
             }
             else if (primitiveToken.Type == ExpressionTokenType.LeftBrace)
             {
@@ -555,7 +557,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 primitiveToken = GetCurrentToken();
                 if (primitiveToken.Type != ExpressionTokenType.RightBrace)
                 {
-                    throw new SyntaxException(null, SyntaxErrorCode.MissedCloseParenthesis, "Expected ')' was not found");
+                    throw new SyntaxException(null, SyntaxErrorCode.MissedCloseParenthesis, "Expected ')' was not found", primitiveToken.Line, primitiveToken.Column);
                 }
                 MoveToNextToken();
             }
@@ -565,7 +567,7 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 ExpressionToken token = GetCurrentToken();
                 if (token.Type != ExpressionTokenType.LeftBrace)
                 {
-                    throw new SyntaxException(null, SyntaxErrorCode.Internal, "Internal error.");
+                    throw new SyntaxException(null, SyntaxErrorCode.Internal, "Internal error.", token.Line, token.Column);
                 }
                 int paramCount = 0;
                 do
@@ -590,17 +592,17 @@ namespace PipServices3.Expressions.Calculator.Parsers
                 }
                 MoveToNextToken();
 
-                AddTokenToResult(ExpressionTokenType.Constant, new Variant(paramCount));
-                AddTokenToResult(primitiveToken.Type, primitiveToken.Value);
+                AddTokenToResult(ExpressionTokenType.Constant, new Variant(paramCount), primitiveToken.Line, primitiveToken.Column);
+                AddTokenToResult(primitiveToken.Type, primitiveToken.Value, primitiveToken.Line, primitiveToken.Column);
             }
             else
             {
-                throw new SyntaxException(null, SyntaxErrorCode.ErrorAt, string.Format("Syntax error at {0}", primitiveToken.Value));
+                throw new SyntaxException(null, SyntaxErrorCode.ErrorAt, string.Format("Syntax error at {0}", primitiveToken.Value), primitiveToken.Line, primitiveToken.Column);
             }
 
             if (unaryToken != null)
             {
-                AddTokenToResult(unaryToken.Type, Variant.Empty);
+                AddTokenToResult(unaryToken.Type, Variant.Empty, unaryToken.Line, unaryToken.Column);
             }
 
             // Process [] operator.
@@ -615,13 +617,12 @@ namespace PipServices3.Expressions.Calculator.Parsers
                     primitiveToken = GetCurrentToken();
                     if (primitiveToken.Type != ExpressionTokenType.RightSquareBrace)
                     {
-                        throw new SyntaxException(null, SyntaxErrorCode.MissedCloseSquareBracket, "Expected ']' was not found");
+                        throw new SyntaxException(null, SyntaxErrorCode.MissedCloseSquareBracket, "Expected ']' was not found", primitiveToken.Line, primitiveToken.Column);
                     }
                     MoveToNextToken();
-                    AddTokenToResult(ExpressionTokenType.Element, Variant.Empty);
+                    AddTokenToResult(ExpressionTokenType.Element, Variant.Empty, primitiveToken.Line, primitiveToken.Column);
                 }
             }
         }
-
     }
 }

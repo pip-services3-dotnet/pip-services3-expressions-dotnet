@@ -11,11 +11,11 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var state = new CppCommentState();
 
-            var reader = new StringPushbackReader("-- Comment \n Comment ");
+            var scanner = new StringScanner("-- Comment \n Comment ");
             var failed = false;
             try
             {
-                state.NextToken(reader, null);
+                state.NextToken(scanner, null);
             }
             catch
             {
@@ -23,13 +23,13 @@ namespace PipServices3.Expressions.Tokenizers.Generic
             }
             Assert.True(failed);
 
-            reader = new StringPushbackReader("// Comment \n Comment ");
-            var token = state.NextToken(reader, null);
+            scanner = new StringScanner("// Comment \n Comment ");
+            var token = state.NextToken(scanner, null);
             Assert.Equal("// Comment ", token.Value);
             Assert.Equal(TokenType.Comment, token.Type);
 
-            reader = new StringPushbackReader("/* Comment \n Comment */#");
-            token = state.NextToken(reader, null);
+            scanner = new StringScanner("/* Comment \n Comment */#");
+            token = state.NextToken(scanner, null);
             Assert.Equal("/* Comment \n Comment */", token.Value);
             Assert.Equal(TokenType.Comment, token.Type);
         }

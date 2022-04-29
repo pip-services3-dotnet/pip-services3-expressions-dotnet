@@ -11,8 +11,8 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var state = new GenericWhitespaceState();
 
-            var reader = new StringPushbackReader(" \t\n\r ");
-            var token = state.NextToken(reader, null);
+            var scanner = new StringScanner(" \t\n\r ");
+            var token = state.NextToken(scanner, null);
             Assert.Equal(" \t\n\r ", token.Value);
             Assert.Equal(TokenType.Whitespace, token.Type);
         }

@@ -11,8 +11,8 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         {
             var state = new GenericWordState();
 
-            var reader = new StringPushbackReader("AB_CD=");
-            var token = state.NextToken(reader, null);
+            var scanner = new StringScanner("AB_CD=");
+            var token = state.NextToken(scanner, null);
             Assert.Equal("AB_CD", token.Value);
             Assert.Equal(TokenType.Word, token.Type);
         }

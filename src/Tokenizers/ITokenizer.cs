@@ -106,18 +106,18 @@ namespace PipServices3.Expressions.Tokenizers
         IWordState WordState { get; }
 
         /// <summary>
-        /// The stream reader to tokenize.
+        /// The stream scanner to tokenize.
         /// </summary>
-        IPushbackReader Reader { get; set; }
+        IScanner Scanner { get; set; }
 
         /// <summary>
         /// Checks if there is the next token exist.
         /// </summary>
-        /// <returns><code>true</code> if reader has the next token.</returns>
+        /// <returns><code>true</code> if scanner has the next token.</returns>
         bool HasNextToken();
 
         /// <summary>
-        /// Gets the next token from the reader.
+        /// Gets the next token from the scanner.
         /// </summary>
         /// <returns>Next token of <code>null</code> if there are no more tokens left.</returns>
         Token NextToken();
@@ -125,9 +125,9 @@ namespace PipServices3.Expressions.Tokenizers
         /// <summary>
         /// Tokenizes a textual stream into a list of token structures.
         /// </summary>
-        /// <param name="reader">A textual stream to be tokenized.</param>
+        /// <param name="scanner">A textual stream to be tokenized.</param>
         /// <returns>A list of token structures.</returns>
-        IList<Token> TokenizeStream(IPushbackReader reader);
+        IList<Token> TokenizeStream(IScanner scanner);
 
         /// <summary>
         /// Tokenizes a string buffer into a list of tokens structures.
@@ -139,9 +139,9 @@ namespace PipServices3.Expressions.Tokenizers
         /// <summary>
         /// Tokenizes a textual stream into a list of strings.
         /// </summary>
-        /// <param name="reader">A textual stream to be tokenized.</param>
+        /// <param name="scanner">A textual stream to be tokenized.</param>
         /// <returns>A list of token strings.</returns>
-        IList<string> TokenizeStreamToStrings(IPushbackReader reader);
+        IList<string> TokenizeStreamToStrings(IScanner scanner);
 
         /// <summary>
         /// Tokenizes a string buffer into a list of strings.

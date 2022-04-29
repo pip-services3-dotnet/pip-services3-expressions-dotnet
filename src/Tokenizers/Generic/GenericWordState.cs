@@ -6,7 +6,7 @@ using PipServices3.Expressions.Tokenizers.Utilities;
 namespace PipServices3.Expressions.Tokenizers.Generic
 {
     /// <summary>
-    /// A wordState returns a word from a reader. Like other states, a tokenizer transfers the job
+    /// A wordState returns a word from a scanner. Like other states, a tokenizer transfers the job
     /// of reading to this state, depending on an initial character. Thus, the tokenizer decides
     /// which characters may begin a word, and this state determines which characters may appear
     /// as a second or later character in a word. These are typically different sets of characters;
@@ -47,24 +47,26 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         /// <summary>
         /// Ignore word (such as blanks and tabs), and return the tokenizer's next token.
         /// </summary>
-        /// <param name="reader"></param>
+        /// <param name="scanner"></param>
         /// <param name="tokenizer"></param>
         /// <returns>The tokenizer's next token</returns>
-        public virtual Token NextToken(IPushbackReader reader, ITokenizer tokenizer)
+        public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             char nextSymbol;
             StringBuilder tokenValue = new StringBuilder();
-            for (nextSymbol = reader.Read(); _map.Lookup(nextSymbol); nextSymbol = reader.Read())
+            int line = scanner.PeekLine();
+            int column = scanner.PeekColumn();
+            for (nextSymbol = scanner.Read(); _map.Lookup(nextSymbol); nextSymbol = scanner.Read())
             {
                 tokenValue.Append(nextSymbol);
             }
 
             if (!CharValidator.IsEof(nextSymbol))
             {
-                reader.Pushback(nextSymbol);
+                scanner.Unread();
             }
 
-            return new Token(TokenType.Word, tokenValue.ToString());
+            return new Token(TokenType.Word, tokenValue.ToString(), line, column);
         }
 
         /// <summary>

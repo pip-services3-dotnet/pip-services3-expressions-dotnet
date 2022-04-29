@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['variable',['Variable',['../class_pip_services3_1_1_expressions_1_1_calculator_1_1_variables_1_1_variable.html#adfb50795bf7488d2a3dc809acecc179f',1,'PipServices3::Expressions::Calculator::Variables::Variable']]],
-  ['variant',['Variant',['../class_pip_services3_1_1_expressions_1_1_variants_1_1_variant.html#aaf96c228b689468a0e3fe268a391d59c',1,'PipServices3.Expressions.Variants.Variant.Variant()'],['../class_pip_services3_1_1_expressions_1_1_variants_1_1_variant.html#a947d7e1cd5e84ff0ab9c82ca2c0d6f33',1,'PipServices3.Expressions.Variants.Variant.Variant(object value)']]]
+  ['unread_478',['Unread',['../interface_pip_services3_1_1_expressions_1_1_i_o_1_1_i_scanner.html#aa6684d86579a83d4e36c8815b090844b',1,'PipServices3.Expressions.IO.IScanner.Unread()'],['../class_pip_services3_1_1_expressions_1_1_i_o_1_1_string_scanner.html#ab6d7b547c5e57e4ca4f325eaf0f2bba3',1,'PipServices3.Expressions.IO.StringScanner.Unread()']]],
+  ['unreadmany_479',['UnreadMany',['../interface_pip_services3_1_1_expressions_1_1_i_o_1_1_i_scanner.html#aef6c72d06e7528a47a1f32cd7e1cf70a',1,'PipServices3.Expressions.IO.IScanner.UnreadMany()'],['../class_pip_services3_1_1_expressions_1_1_i_o_1_1_string_scanner.html#a66b08bf9bf905488e92e383b1f7a0e1e',1,'PipServices3.Expressions.IO.StringScanner.UnreadMany()']]]
 ];
