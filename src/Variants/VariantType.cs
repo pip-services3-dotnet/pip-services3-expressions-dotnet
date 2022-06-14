@@ -9,6 +9,7 @@
         Integer,
         Long,
         Float,
+        Decimal,
         Double,
         String,
         Boolean,

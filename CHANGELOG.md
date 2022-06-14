@@ -1,5 +1,9 @@
 # <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> <br/> Data processing and persistence components for .NET Changelog
 
+## <a name="3.3.1"></a> 3.3.1 (2022-06-14)
+### Features
+* **Variants**: Extended with decimal type and operations
+
 ## <a name="3.3.0"></a> 3.3.0 (2021-09-01)
 
 ### Breaking Changes

@@ -25,6 +25,8 @@ namespace PipServices3.Expressions.Variants
                     return "Long";
                 case VariantType.Float:
                     return "Float";
+                case VariantType.Decimal:
+                    return "Decimal";
                 case VariantType.Double:
                     return "Double";
                 case VariantType.String:
@@ -83,6 +85,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = value1.AsFloat + value2.AsFloat;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value1.AsDecimal + value2.AsDecimal;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value1.AsDouble + value2.AsDouble;
                     return result;
@@ -126,6 +131,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsFloat = value1.AsFloat - value2.AsFloat;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value1.AsDecimal - value2.AsDecimal;
                     return result;
                 case VariantType.Double:
                     result.AsDouble = value1.AsDouble - value2.AsDouble;
@@ -171,6 +179,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = value1.AsFloat * value2.AsFloat;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value1.AsDecimal * value2.AsDecimal;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value1.AsDouble * value2.AsDouble;
                     return result;
@@ -208,6 +219,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsFloat = value1.AsFloat / value2.AsFloat;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value1.AsDecimal / value2.AsDecimal;
                     return result;
                 case VariantType.Double:
                     result.AsDouble = value1.AsDouble / value2.AsDouble;
@@ -269,6 +283,7 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Long:
                 case VariantType.Float:
                 case VariantType.Double:
+                case VariantType.Decimal:
                     // Converts second operant to the type of the first operand.
                     value1 = Convert(value1, VariantType.Double);
                     value2 = Convert(value2, VariantType.Double);
@@ -504,6 +519,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = -value.AsFloat;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = -value.AsDecimal;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = -value.AsDouble;
                     return result;
@@ -547,6 +565,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsBoolean = value1.AsFloat == value2.AsFloat;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsBoolean = value1.AsDecimal == value2.AsDecimal;
                     return result;
                 case VariantType.Double:
                     result.AsBoolean = value1.AsDouble == value2.AsDouble;
@@ -609,6 +630,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsBoolean = value1.AsFloat != value2.AsFloat;
                     return result;
+                case VariantType.Decimal:
+                    result.AsBoolean = value1.AsDecimal != value2.AsDecimal;
+                    return result;
                 case VariantType.Double:
                     result.AsBoolean = value1.AsDouble != value2.AsDouble;
                     return result;
@@ -665,6 +689,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsBoolean = value1.AsFloat > value2.AsFloat;
                     return result;
+                case VariantType.Decimal:
+                    result.AsBoolean = value1.AsDecimal > value2.AsDecimal;
+                    return result;
                 case VariantType.Double:
                     result.AsBoolean = value1.AsDouble > value2.AsDouble;
                     return result;
@@ -712,6 +739,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsBoolean = value1.AsFloat < value2.AsFloat;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsBoolean = value1.AsDecimal < value2.AsDecimal;
                     return result;
                 case VariantType.Double:
                     result.AsBoolean = value1.AsDouble < value2.AsDouble;
@@ -761,6 +791,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsBoolean = value1.AsFloat >= value2.AsFloat;
                     return result;
+                case VariantType.Decimal:
+                    result.AsBoolean = value1.AsDecimal >= value2.AsDecimal;
+                    return result;
                 case VariantType.Double:
                     result.AsBoolean = value1.AsDouble >= value2.AsDouble;
                     return result;
@@ -808,6 +841,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsBoolean = value1.AsFloat <= value2.AsFloat;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsBoolean = value1.AsDecimal <= value2.AsDecimal;
                     return result;
                 case VariantType.Double:
                     result.AsBoolean = value1.AsDouble <= value2.AsDouble;

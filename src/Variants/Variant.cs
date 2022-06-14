@@ -93,6 +93,19 @@ namespace PipServices3.Expressions.Variants
         }
 
         /// <summary>
+        /// Provides access to variant value as decimal
+        /// </summary>
+        public decimal AsDecimal
+        {
+            get { return (decimal)_value; }
+            set
+            {
+                _type = VariantType.Decimal;
+                _value = value;
+            }
+        }
+
+        /// <summary>
         /// Provides access to variant value as double
         /// </summary>
         public double AsDouble
@@ -166,6 +179,10 @@ namespace PipServices3.Expressions.Variants
                 else if (value is System.Single)
                 {
                     _type = VariantType.Float;
+                }
+                else if (value is System.Decimal)
+                {
+                    _type = VariantType.Decimal;
                 }
                 else if (value is System.Double)
                 {

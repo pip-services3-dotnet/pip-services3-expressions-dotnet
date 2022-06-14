@@ -6,9 +6,9 @@
     <RootNamespace>PipServices3.Expressions</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.3.0</Version>
+    <Version>3.3.1</Version>
     <Authors>Sergey Seroukhov</Authors>
-    <Copyright>Conceptual Vision Consulting LLC. 2020-2021</Copyright>
+    <Copyright>Conceptual Vision Consulting LLC. 2020-2022</Copyright>
     <Description>Tokenizers, parsers and expression calculators for Pip.Services in .NET</Description>
     <Company>Conceptual Vision Consulting LLC.</Company>
     <Product>PipServices3.E</Product>
@@ -22,20 +22,5 @@
   <ItemGroup>
     <PackageReference Include="PipServices3.Commons" Version="3.3.0" />
     <PackageReference Include="PipServices3.Components" Version="3.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Variants\" />
-    <Folder Include="Tokenizers\" />
-    <Folder Include="Tokenizers\Utilities\" />
-    <Folder Include="Tokenizers\Generic\" />
-    <Folder Include="Calculator\" />
-    <Folder Include="Calculator\Functions\" />
-    <Folder Include="Calculator\Variables\" />
-    <Folder Include="Calculator\Tokenizers\" />
-    <Folder Include="Calculator\Parsers\" />
-    <Folder Include="Csv\" />
-    <Folder Include="Mustache\" />
-    <Folder Include="Mustache\Parsers" />
-    <Folder Include="Mustache\Tokenizers" />
   </ItemGroup>
 </Project>

@@ -173,5 +173,38 @@ namespace PipServices3.Expressions.Calculator
             Assert.Equal(VariantType.Boolean, result.Type);
             Assert.True(result.AsBoolean);
         }
+
+        [Theory]
+        [InlineData("+", 0, 0, 0)]
+        [InlineData("+", 1, 2, 3)]
+        [InlineData("+", 1.5, 2.5, 4)]
+        [InlineData("+", 2.51, 2.52, 5.03)]
+        [InlineData("-", 0, 0, 0)]
+        [InlineData("-", 3, 2, 1)]
+        [InlineData("-", 4, 1.5, 2.5)]
+        [InlineData("-", 5.03, 2.51, 2.52)]
+        [InlineData("*", 0, 0, 0)]
+        [InlineData("*", 3, 2, 6)]
+        [InlineData("*", 4, 1.2, 4.8)]
+        [InlineData("*", 5.05, 2.51, 12.6755)]
+        [InlineData("/", 6, 3, 2)]
+        [InlineData("/", 4.8, 4, 1.2)]
+        [InlineData("/", 12.6755, 5.05, 2.51)]
+        public async Task TestEvaluationOfDecimalValues(string operation, decimal valueA, decimal valueB, decimal expectedResult)
+        {
+            var variableNameA = "A";
+            var variableNameB = "B";
+            var calculator = new ExpressionCalculator($"{variableNameA} {operation} {variableNameB}");
+
+            Assert.Equal(variableNameA, calculator.DefaultVariables.FindByName(variableNameA).Name);
+            Assert.Equal(variableNameB, calculator.DefaultVariables.FindByName(variableNameB).Name);
+
+            calculator.DefaultVariables.FindByName(variableNameA).Value = new Variant(valueA);
+            calculator.DefaultVariables.FindByName(variableNameB).Value = new Variant(valueB);
+
+            var result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Decimal, result.Type);
+            Assert.Equal(expectedResult, result.AsDecimal);
+        }
     }
 }
