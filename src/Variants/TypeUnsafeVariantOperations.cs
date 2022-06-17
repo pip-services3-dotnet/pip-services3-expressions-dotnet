@@ -119,6 +119,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = value.AsInteger;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value.AsInteger;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsInteger;
                     return result;
@@ -148,6 +151,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = value.AsLong;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value.AsLong;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsLong;
                     return result;
@@ -176,6 +182,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Long:
                     result.AsLong = (long)Math.Truncate(value.AsFloat);
+                    return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = DecimalConverter.ToDecimal(value.AsFloat);
                     return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsFloat;
@@ -226,6 +235,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = FloatConverter.ToFloat(value.AsString);
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = DecimalConverter.ToDecimal(value.AsString);
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = DoubleConverter.ToDouble(value.AsString);
                     return result;
@@ -257,6 +269,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsFloat = value.AsBoolean ? 1 : 0;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value.AsBoolean ? 1 : 0;
                     return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsBoolean ? 1 : 0;

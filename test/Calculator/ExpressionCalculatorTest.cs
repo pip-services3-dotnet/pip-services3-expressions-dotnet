@@ -206,5 +206,34 @@ namespace PipServices3.Expressions.Calculator
             Assert.Equal(VariantType.Decimal, result.Type);
             Assert.Equal(expectedResult, result.AsDecimal);
         }
+
+        [Fact]
+        public async Task TestEvaluationOfDecimalValuesWithAnotherValues()
+        {
+            var variableNameA = "A";
+            decimal valueA = 10;
+            var calculator = new ExpressionCalculator();
+
+            calculator.Expression = $"{variableNameA} + 5";
+            Assert.Equal("A", calculator.DefaultVariables.FindByName("a").Name);
+            calculator.DefaultVariables.FindByName("A").Value = new Variant(valueA);
+            var result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Decimal, result.Type);
+            Assert.Equal(15, result.AsDecimal);
+
+            calculator.Expression = $"{variableNameA} + 5.5";
+            Assert.Equal("A", calculator.DefaultVariables.FindByName("a").Name);
+            calculator.DefaultVariables.FindByName("A").Value = new Variant(valueA);
+            result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Decimal, result.Type);
+            Assert.Equal((decimal)15.5, result.AsDecimal);
+
+            calculator.Expression = $"{variableNameA} + 5.5555";
+            Assert.Equal("A", calculator.DefaultVariables.FindByName("a").Name);
+            calculator.DefaultVariables.FindByName("A").Value = new Variant(valueA);
+            result = await calculator.EvaluateAsync();
+            Assert.Equal(VariantType.Decimal, result.Type);
+            Assert.Equal((decimal)15.5555, result.AsDecimal);
+        }
     }
 }

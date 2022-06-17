@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PipServices3.Commons.Convert;
+
+using System;
 
 namespace PipServices3.Expressions.Variants
 {
@@ -60,6 +62,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = value.AsInteger;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value.AsInteger;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsInteger;
                     return result;
@@ -77,6 +82,9 @@ namespace PipServices3.Expressions.Variants
                 case VariantType.Float:
                     result.AsFloat = value.AsLong;
                     return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = value.AsLong;
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsLong;
                     return result;
@@ -91,6 +99,9 @@ namespace PipServices3.Expressions.Variants
             var result = new Variant();
             switch (newType)
             {
+                case VariantType.Decimal:
+                    result.AsDecimal = DecimalConverter.ToDecimal(value.AsFloat);
+                    return result;
                 case VariantType.Double:
                     result.AsDouble = value.AsFloat;
                     return result;
