@@ -464,6 +464,18 @@ namespace PipServices3.Expressions.Variants
         }
 
         /// <summary>
+        /// Creates a new variant from Decimal value.
+        /// </summary>
+        /// <param name="value">a variant value.</param>
+        /// <returns>A created variant object</returns>
+        public static Variant FromDecimal(decimal value)
+        {
+            var result = new Variant();
+            result.AsDecimal = value;
+            return result;
+        }
+
+        /// <summary>
         /// Creates a new variant from Double value.
         /// </summary>
         /// <param name="value">a variant value.</param>

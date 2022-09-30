@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using PipServices3.Expressions.Calculator.Variables;
 using PipServices3.Expressions.Variants;
 using Xunit;
 
@@ -234,6 +235,28 @@ namespace PipServices3.Expressions.Calculator
             result = await calculator.EvaluateAsync();
             Assert.Equal(VariantType.Decimal, result.Type);
             Assert.Equal((decimal)15.5555, result.AsDecimal);
+        }
+
+        [Theory]
+        [InlineData(400000.00000000, 0.20000000, 500000.00000000)]
+        [InlineData(10.0, 0.5, 20.0)]
+        public async Task TestEvaluationOfComplexExpression(decimal valueA, decimal valueB, decimal expected)
+        {
+            // arrange
+            var calculator = new ExpressionCalculator()
+            {
+                Expression = "A / (1.0 - B)"
+            };
+
+            var variables = new VariableCollection();
+            variables.Add(new Variable("A", Variant.FromDecimal(valueA)));
+            variables.Add(new Variable("B", Variant.FromDecimal(valueB)));
+
+            // act
+            var result = await calculator.EvaluateUsingVariablesAsync(variables);
+
+            // assert
+            Assert.Equal(expected, result.AsDecimal);
         }
     }
 }

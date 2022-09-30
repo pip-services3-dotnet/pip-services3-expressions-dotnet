@@ -51,6 +51,8 @@ namespace PipServices3.Expressions.Variants
                     return ConvertFromLong(value, newType);
                 case VariantType.Float:
                     return ConvertFromFloat(value, newType);
+                case VariantType.Decimal:
+                    return ConvertFromDecimal(value, newType);
                 case VariantType.Double:
                     return ConvertFromDouble(value, newType);
                 case VariantType.DateTime:
@@ -83,6 +85,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Double:
                     result.AsDouble = 0;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = 0;
                     return result;
                 case VariantType.Boolean:
                     result.AsBoolean = false;
@@ -198,6 +203,32 @@ namespace PipServices3.Expressions.Variants
                 + " to " + TypeToString(newType) + " is not supported.");
         }
 
+        private Variant ConvertFromDecimal(Variant value, VariantType newType)
+        {
+            var result = new Variant();
+            switch (newType)
+            {
+                case VariantType.Integer:
+                    result.AsInteger = (int)Math.Truncate(value.AsDecimal);
+                    return result;
+                case VariantType.Long:
+                    result.AsLong = (long)Math.Truncate(value.AsDecimal);
+                    return result;
+                case VariantType.Float:
+                    result.AsFloat = FloatConverter.ToFloat(value.AsDecimal);
+                    return result;
+                case VariantType.Double:
+                    result.AsDouble = DoubleConverter.ToDouble(value.AsDecimal);
+                    return result;
+                case VariantType.Boolean:
+                    result.AsBoolean = value.AsDecimal != 0;
+                    return result;
+            }
+            throw new InvalidCastException(
+                "Variant convertion from " + TypeToString(value.Type)
+                + " to " + TypeToString(newType) + " is not supported.");
+        }
+
         private Variant ConvertFromDouble(Variant value, VariantType newType)
         {
             var result = new Variant();
@@ -211,6 +242,9 @@ namespace PipServices3.Expressions.Variants
                     return result;
                 case VariantType.Float:
                     result.AsFloat = (float)value.AsDouble;
+                    return result;
+                case VariantType.Decimal:
+                    result.AsDecimal = DecimalConverter.ToDecimal(value.AsFloat);
                     return result;
                 case VariantType.Boolean:
                     result.AsBoolean = value.AsDouble != 0;
