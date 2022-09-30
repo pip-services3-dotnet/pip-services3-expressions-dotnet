@@ -244,7 +244,7 @@ namespace PipServices3.Expressions.Variants
                     result.AsFloat = (float)value.AsDouble;
                     return result;
                 case VariantType.Decimal:
-                    result.AsDecimal = DecimalConverter.ToDecimal(value.AsFloat);
+                    result.AsDecimal = DecimalConverter.ToDecimal(value.AsDouble);
                     return result;
                 case VariantType.Boolean:
                     result.AsBoolean = value.AsDouble != 0;
