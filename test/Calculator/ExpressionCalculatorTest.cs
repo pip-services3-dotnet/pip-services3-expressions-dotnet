@@ -238,15 +238,19 @@ namespace PipServices3.Expressions.Calculator
         }
 
         [Theory]
-        [InlineData(400000.00000000, 0.20000000, 500000.00000000)]
-        [InlineData(10.0, 0.5, 20.0)]
-        public async Task TestEvaluationOfComplexExpression(decimal valueA, decimal valueB, decimal expected)
+        [InlineData(400000.00000000, 0.20000000)]
+        [InlineData(10.0, 0.5)]
+        [InlineData(79329.25, 0.12755754)]
+        [InlineData(110742, 0.10107197)]
+        public async Task TestEvaluationOfComplexExpression(decimal valueA, decimal valueB)
         {
             // arrange
             var calculator = new ExpressionCalculator()
             {
-                Expression = "A / (1.0 - B)"
+                Expression = "A / (1.0m - B)"
             };
+
+            var expected = valueA / (1.0m - valueB);
 
             var variables = new VariableCollection();
             variables.Add(new Variable("A", Variant.FromDecimal(valueA)));

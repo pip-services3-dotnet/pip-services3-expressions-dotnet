@@ -6,7 +6,7 @@
     <RootNamespace>PipServices3.Expressions</RootNamespace>
     <ApplicationIcon />
     <Win32Resource />
-    <Version>3.4.2</Version>
+    <Version>3.4.3</Version>
     <Authors>Sergey Seroukhov</Authors>
     <Copyright>Conceptual Vision Consulting LLC. 2020-2022</Copyright>
     <Description>Tokenizers, parsers and expression calculators for Pip.Services in .NET</Description>

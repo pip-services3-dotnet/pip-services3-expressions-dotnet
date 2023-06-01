@@ -2,7 +2,7 @@
     "name": "pip-services3-expressions-dotnet",
     "type": "module",
     "language": "dotnet",
-    "version": "3.4.2",
+    "version": "3.4.3",
     "build": 0,
     "registry": "pipservices",
     "artifacts": [

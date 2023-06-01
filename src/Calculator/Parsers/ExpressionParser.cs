@@ -311,6 +311,12 @@ namespace PipServices3.Expressions.Calculator.Parsers
                             tokenValue = new Variant(Single.Parse(token.Value));
                             break;
                         }
+                    case TokenType.Decimal:
+                        {
+                            tokenType = ExpressionTokenType.Constant;
+                            tokenValue = new Variant(Decimal.Parse(token.Value));
+                            break;
+                        }
                     case TokenType.Quoted:
                         {
                             tokenType = ExpressionTokenType.Constant;

@@ -20,7 +20,8 @@ namespace PipServices3.Expressions.Tokenizers
         Keyword,
         Whitespace,
         Comment,
-        Special
+        Special,
+        Decimal
     };
 }
 

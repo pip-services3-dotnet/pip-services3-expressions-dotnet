@@ -1,6 +1,6 @@
 # <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> <br/> Data processing and persistence components for .NET Changelog
 
-## <a name="3.4.2"></a> 3.4.2 (2022-09-30)
+## <a name="3.4.3"></a> 3.4.3 (2023-06-01)
 * **Variants**: Fixed issue in decimal converter
 
 ## <a name="3.4.0"></a> 3.4.0 (2022-08-04)

@@ -22,6 +22,7 @@ namespace PipServices3.Expressions.Tokenizers.Generic
         public virtual Token NextToken(IScanner scanner, ITokenizer tokenizer)
         {
             bool absorbedDot = false;
+            bool isDecimal = false;
             bool gotADigit = false;
             StringBuilder tokenValue = new StringBuilder("");
             char nextSymbol = scanner.Read();
@@ -59,6 +60,13 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 }
             }
 
+            // decimal
+            if (nextSymbol == 'm')
+            {
+                isDecimal = true;
+                nextSymbol = scanner.Read();
+            }
+
             // Pushback last unprocessed symbol.
             if (!CharValidator.IsEof(nextSymbol))
             {
@@ -79,7 +87,9 @@ namespace PipServices3.Expressions.Tokenizers.Generic
                 }
             }
 
-            return new Token(absorbedDot ? TokenType.Float : TokenType.Integer, tokenValue.ToString(), line, column);
+            var tokenType = isDecimal ? TokenType.Decimal : (absorbedDot ? TokenType.Float : TokenType.Integer);
+
+            return new Token(tokenType, tokenValue.ToString(), line, column);
         }
     }
 }
