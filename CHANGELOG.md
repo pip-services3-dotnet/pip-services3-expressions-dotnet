@@ -1,9 +1,12 @@
 # <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> <br/> Data processing and persistence components for .NET Changelog
 
-## <a name="3.4.3"></a> 3.4.3 (2023-06-01)
+## <a name="3.4.1-3.4.4"></a> 3.4.1-3.4.4 (2023-07-07)
+
+### Features
 * Added Decimal Token Type 
 * Updated parser to extract decimal constants
 * **Variants**: Fixed issue in decimal converter
+* Added Average function to DefaultFunctionCollection
 
 ## <a name="3.4.0"></a> 3.4.0 (2022-08-04)
 

@@ -56,6 +56,8 @@ namespace PipServices3.Expressions.Calculator.Functions
             Add(new DelegatedFunction("Null", (FunctionCalculator)NullFunctionCalculatorAsync));
             Add(new DelegatedFunction("Contains", (FunctionCalculator)ContainsFunctionCalculatorAsync));
             Add(new DelegatedFunction("Array", (FunctionCalculator)ArrayFunctionCalculatorAsync));
+            Add(new DelegatedFunction("Avg", (FunctionCalculator)AvgFunctionCalculatorAsync));
+            Add(new DelegatedFunction("Average", (FunctionCalculator)AvgFunctionCalculatorAsync));
         }
 
         /// <summary>
@@ -472,6 +474,16 @@ namespace PipServices3.Expressions.Calculator.Functions
         private Task<Variant> ArrayFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
         {
             return Task.FromResult(new Variant(parameters.ToArray()));
+        }
+
+        private async Task<Variant> AvgFunctionCalculatorAsync(IList<Variant> parameters, IVariantOperations variantOperations)
+        {
+            var result = await SumFunctionCalculatorAsync(parameters, variantOperations);
+
+            Variant count = variantOperations.Convert(new Variant(parameters.Count), result.Type);
+            result = variantOperations.Div(result, count);
+
+            return result;
         }
     }
 }
